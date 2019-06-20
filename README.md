@@ -18,14 +18,15 @@ docker-compose up
 ```
 
 ## Themes
-8 bit Theme:
+### 8 bit Theme
+
 Go to /admin/config, enter the following code to Stylesheet editor and press **Update**:
 ```css
 @font-face {
   font-family: 'Press Start 2P';
   font-style: normal;
   font-weight: 400;
-  src: local('Press Start 2P Regular'), local('PressStart2P-Regular'), url(https://fonts.gstatic.com/s/pressstart2p/v7/e3t4euO8T-267oIAQAu6jDQyK3nYivN04w.woff2) format('woff2');
+  src: local('Presstest Start 2P Regular'), local('PressStart2P-Regular'), url(https://fonts.gstatic.com/s/pressstart2p/v7/e3t4euO8T-267oIAQAu6jDQyK3nYivN04w.woff2) format('woff2');
   unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
 /* cyrillic */
@@ -217,5 +218,13 @@ color: #17b06b;
 }
 .solved-challenge {
     opacity: 1;
+}
+
+.form-control:focus {
+    background-color: transparent;
+    border-color: #a3d39c;
+    box-shadow: 0 0 0 0.2rem #a3d39c;
+    transition: background-color 0.3s, border-color 0.3s;
+    color: white;
 }
 ```
