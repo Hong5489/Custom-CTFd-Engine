@@ -1,7 +1,7 @@
 # Custom CTFd engine
 ## Features
--> Flag Sharing Prevention
--> Dynamic Flag for Web Challenges and Binary Challenges
+- Flag Sharing Prevention
+- Dynamic Flag for Web Challenges and Binary Challenges
 
 First run this:
 ```
