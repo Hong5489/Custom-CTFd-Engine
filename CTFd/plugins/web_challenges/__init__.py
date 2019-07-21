@@ -1,37 +1,34 @@
+from __future__ import division  # Use floating point for math calculations
+from CTFd.plugins.challenges import BaseChallenge, CHALLENGE_CLASSES
 from CTFd.plugins import register_plugin_assets_directory
 from CTFd.plugins.flags import get_flag_class
-from CTFd.models import db, Solves, Fails, Flags, Challenges, ChallengeFiles, Tags, Hints
+from CTFd.models import db, Solves, Fails, Flags, Challenges, ChallengeFiles, Tags, Teams, Hints, Ports
 from CTFd import utils
+from CTFd.utils.migrations import upgrade
 from CTFd.utils.user import get_ip
 from CTFd.utils.uploads import upload_file, delete_file
+from CTFd.utils.modes import get_model
 from flask import Blueprint
-import six,time
+import math
 
 
-class BaseChallenge(object):
-    id = None
-    name = None
-    templates = {}
-    scripts = {}
-
-
-class CTFdStandardChallenge(BaseChallenge):
-    id = "standard"  # Unique identifier used to register challenges
-    name = "standard"  # Name of a challenge type
-    templates = {  # Templates used for each aspect of challenge editing & viewing
-        'create': '/plugins/challenges/assets/create.html',
-        'update': '/plugins/challenges/assets/update.html',
-        'view': '/plugins/challenges/assets/view.html',
+class WebsiteChallenge(BaseChallenge):
+    id = "web"  # Unique identifier used to register challenges
+    name = "web"  # Name of a challenge type
+    templates = {  # Handlebars templates used for each aspect of challenge editing & viewing
+        'create': '/plugins/web_challenges/assets/create.html',
+        'update': '/plugins/web_challenges/assets/update.html',
+        'view': '/plugins/web_challenges/assets/view.html',
     }
     scripts = {  # Scripts that are loaded when a template is loaded
-        'create': '/plugins/challenges/assets/create.js',
-        'update': '/plugins/challenges/assets/update.js',
-        'view': '/plugins/challenges/assets/view.js',
+        'create': '/plugins/web_challenges/assets/create.js',
+        'update': '/plugins/web_challenges/assets/update.js',
+        'view': '/plugins/web_challenges/assets/view.js',
     }
     # Route at which files are accessible. This must be registered using register_plugin_assets_directory()
-    route = '/plugins/challenges/assets/'
+    route = '/plugins/web_challenges/assets/'
     # Blueprint used to access the static_folder directory.
-    blueprint = Blueprint('standard', __name__, template_folder='templates', static_folder='assets')
+    blueprint = Blueprint('web_challenges', __name__, template_folder='templates', static_folder='assets')
 
     @staticmethod
     def create(request):
@@ -42,8 +39,7 @@ class CTFdStandardChallenge(BaseChallenge):
         :return:
         """
         data = request.form or request.get_json()
-
-        challenge = Challenges(**data)
+        challenge = WebChallenge(**data)
 
         db.session.add(challenge)
         db.session.commit()
@@ -58,20 +54,24 @@ class CTFdStandardChallenge(BaseChallenge):
         :param challenge:
         :return: Challenge object, data dictionary to be returned to the user
         """
+        challenge = WebChallenge.query.filter_by(id=challenge.id).first()
         data = {
             'id': challenge.id,
             'name': challenge.name,
             'value': challenge.value,
+            'initial': challenge.initial,
+            'decay': challenge.decay,
+            'minimum': challenge.minimum,
             'description': challenge.description,
             'category': challenge.category,
             'state': challenge.state,
             'max_attempts': challenge.max_attempts,
             'type': challenge.type,
             'type_data': {
-                'id': CTFdStandardChallenge.id,
-                'name': CTFdStandardChallenge.name,
-                'templates': CTFdStandardChallenge.templates,
-                'scripts': CTFdStandardChallenge.scripts,
+                'id': WebsiteChallenge.id,
+                'name': WebsiteChallenge.name,
+                'templates': WebsiteChallenge.templates,
+                'scripts': WebsiteChallenge.scripts,
             }
         }
         return data
@@ -87,8 +87,30 @@ class CTFdStandardChallenge(BaseChallenge):
         :return:
         """
         data = request.form or request.get_json()
+
         for attr, value in data.items():
+            # We need to set these to floats so that the next operations don't operate on strings
+            if attr in ('initial', 'minimum', 'decay'):
+                value = float(value)
             setattr(challenge, attr, value)
+
+        Model = get_model()
+
+        solve_count = Solves.query \
+            .join(Model, Solves.account_id == Model.id) \
+            .filter(Solves.challenge_id == challenge.id, Model.hidden == False, Model.banned == False) \
+            .count()
+
+        # It is important that this calculation takes into account floats.
+        # Hence this file uses from __future__ import division
+        value = (((challenge.minimum - challenge.initial) / (challenge.decay ** 2)) * (solve_count ** 2)) + challenge.initial
+
+        value = math.ceil(value)
+
+        if value < challenge.minimum:
+            value = challenge.minimum
+
+        challenge.value = value
 
         db.session.commit()
         return challenge
@@ -110,11 +132,12 @@ class CTFdStandardChallenge(BaseChallenge):
         ChallengeFiles.query.filter_by(challenge_id=challenge.id).delete()
         Tags.query.filter_by(challenge_id=challenge.id).delete()
         Hints.query.filter_by(challenge_id=challenge.id).delete()
+        WebChallenge.query.filter_by(id=challenge.id).delete()
         Challenges.query.filter_by(id=challenge.id).delete()
         db.session.commit()
 
     @staticmethod
-    def attempt(challenge, request,teamDetails=[]):
+    def attempt(challenge, request):
         """
         This method is used to check whether a given input is right or wrong. It does not make any changes and should
         return a boolean for correctness and a string to be shown to the user. It is also in charge of parsing the
@@ -142,8 +165,32 @@ class CTFdStandardChallenge(BaseChallenge):
         :param request: The request the user submitted
         :return:
         """
+        chal = WebChallenge.query.filter_by(id=challenge.id).first()
         data = request.form or request.get_json()
         submission = data['submission'].strip()
+
+        Model = get_model()
+
+        solve_count = Solves.query \
+            .join(Model, Solves.account_id == Model.id) \
+            .filter(Solves.challenge_id == challenge.id, Model.hidden == False, Model.banned == False) \
+            .count()
+
+        # It is important that this calculation takes into account floats.
+        # Hence this file uses from __future__ import division
+        value = (
+            (
+                (chal.minimum - chal.initial) / (chal.decay**2)
+            ) * (solve_count**2)
+        ) + chal.initial
+
+        value = math.ceil(value)
+
+        if value < chal.minimum:
+            value = chal.minimum
+
+        chal.value = value
+
         solve = Solves(
             user_id=user.id,
             team_id=team.id if team else None,
@@ -161,7 +208,7 @@ class CTFdStandardChallenge(BaseChallenge):
         This method is used to insert Fails into the database in order to mark an answer incorrect.
 
         :param team: The Team object from the database
-        :param chal: The Challenge object from the database
+        :param challenge: The Challenge object from the database
         :param request: The request the user submitted
         :return:
         """
@@ -179,27 +226,22 @@ class CTFdStandardChallenge(BaseChallenge):
         db.session.close()
 
 
-def get_chal_class(class_id):
-    """
-    Utility function used to get the corresponding class from a class ID.
+class WebChallenge(Challenges):
+    __mapper_args__ = {'polymorphic_identity': 'web'}
+    id = db.Column(None, db.ForeignKey('challenges.id'), primary_key=True)
+    initial = db.Column(db.Integer, default=0)
+    minimum = db.Column(db.Integer, default=0)
+    decay = db.Column(db.Integer, default=0)
+    docker_name = db.Column(db.String(32), default="")
+    ports = db.relationship("Ports", backref="challenge")
 
-    :param class_id: String representing the class ID
-    :return: Challenge class
-    """
-    cls = CHALLENGE_CLASSES.get(class_id)
-    if cls is None:
-        raise KeyError
-    return cls
-
-
-"""
-Global dictionary used to hold all the Challenge Type classes used by CTFd. Insert into this dictionary to register
-your Challenge Type.
-"""
-CHALLENGE_CLASSES = {
-    "standard": CTFdStandardChallenge
-}
+    def __init__(self, *args, **kwargs):
+        super(WebChallenge, self).__init__(**kwargs)
+        self.initial = kwargs['value']
 
 
 def load(app):
-    register_plugin_assets_directory(app, base_path='/plugins/challenges/assets/')
+    # upgrade()
+    app.db.create_all()
+    CHALLENGE_CLASSES['web'] = WebsiteChallenge
+    register_plugin_assets_directory(app, base_path='/plugins/web_challenges/assets/')

@@ -1,6 +1,6 @@
 from flask import current_app as app, render_template, request, redirect, abort, jsonify, url_for, session, Blueprint, \
     Response, send_file
-from CTFd.models import db, Users, Teams, Solves, Awards, Files, Pages, Tracking
+from CTFd.models import db, Users, Teams, Solves, Awards, Files, Pages, Tracking, Ports
 from CTFd.utils.decorators import authed_only
 from CTFd.utils.decorators.modes import require_team_mode
 from CTFd.utils.modes import USERS_MODE
@@ -10,6 +10,7 @@ from CTFd.utils.dates import unix_time_to_utc
 from CTFd.utils.crypto import verify_password
 from CTFd.utils.decorators.visibility import check_account_visibility, check_score_visibility
 from CTFd.utils.helpers import get_errors, get_infos
+from os import system
 
 teams = Blueprint('teams', __name__)
 
@@ -82,12 +83,20 @@ def new():
             name=teamname,
             password=passphrase
         )
-
         db.session.add(team)
         db.session.commit()
 
         user.team_id = team.id
         db.session.commit()
+        system("docker exec server-skr useradd -m %s -s /bin/bash" % teamname)
+        system('''docker exec server-skr bash -c 'echo "%s:%s" | chpasswd' ''' % (teamname,passphrase))
+        system("docker exec server-skr cp -rp /ctf/. /home/%s/" % teamname)
+        system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (teamname,teamname))
+        system("docker exec server-skr cp /etc/passwd /ctfuser")
+        system("docker exec server-skr cp /etc/shadow /ctfuser")
+
+        from fyp import generateBinaryFlag
+        generateBinaryFlag(team)
         return redirect(url_for('challenges.listing'))
 
 

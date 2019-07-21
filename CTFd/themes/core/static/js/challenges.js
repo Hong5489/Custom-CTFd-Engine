@@ -229,14 +229,16 @@ function getsolves(id) {
 function loadchals(cb) {
     $.get(script_root + "/api/v1/challenges", function (response) {
         var categories = [];
+        var cat;
         challenges = response.data;
 
         $('#challenges-board').empty();
-
-        for (var i = challenges.length - 1; i >= 0; i--) {
-            challenges[i].solves = 0;
-            if ($.inArray(challenges[i].category, categories) == -1) {
-                var category = challenges[i].category;
+        $.get(script_root + "/api/v1/challenges/category", function (response2) {
+        cat = response2.data;
+        for (var i = 0; i <= cat.length-1; i++) {
+            /*challenges[i].solves = 0;*/
+            if ($.inArray(cat[i], categories) == -1) {
+                var category = cat[i];
                 categories.push(category);
 
                 var categoryid = category.replace(/ /g, "-").hashCode();
@@ -253,7 +255,6 @@ function loadchals(cb) {
                 $('#challenges-board').append(categoryrow);
             }
         }
-
         for (var i = 0; i <= challenges.length - 1; i++) {
             var chalinfo = challenges[i];
             var challenge = chalinfo.category.replace(/ /g, "-").hashCode();
@@ -289,6 +290,7 @@ function loadchals(cb) {
         if (cb) {
             cb();
         }
+        });
     });
 }
 

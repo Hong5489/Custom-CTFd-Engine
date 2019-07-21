@@ -43,3 +43,6 @@ def get_current_revision():
     context = MigrationContext.configure(conn)
     current_rev = context.get_current_revision()
     return current_rev
+
+def get_engine():
+    return create_engine(app.config.get('SQLALCHEMY_DATABASE_URI'))

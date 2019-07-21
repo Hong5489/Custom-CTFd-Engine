@@ -58,10 +58,38 @@ class CTFdRegexFlag(BaseFlag):
 
         return res and res.group() == provided
 
+class DynamicFlag(BaseFlag):
+    name = "dynamic"
+    templates = {  # Nunjucks templates used for key editing & viewing
+        'create': '/plugins/flags/assets/dynamic/create.html',
+        'update': '/plugins/flags/assets/dynamic/edit.html',
+    }
+
+    @staticmethod
+    def compare(chal_key_obj, provided):
+        saved = chal_key_obj.content
+        data = chal_key_obj.data
+
+        from fyp import generateFlag
+        from CTFd.utils.user import get_current_team
+        saved = generateFlag(saved,get_current_team())
+        if len(saved) != len(provided):
+            return False
+        result = 0
+
+        if data == "case_insensitive":
+            for x, y in zip(saved.lower(), provided.lower()):
+                result |= ord(x) ^ ord(y)
+        else:
+            for x, y in zip(saved, provided):
+                result |= ord(x) ^ ord(y)
+        return result == 0
+
 
 FLAG_CLASSES = {
     'static': CTFdStaticFlag,
-    'regex': CTFdRegexFlag
+    'regex': CTFdRegexFlag,
+    'dynamic': DynamicFlag
 }
 
 

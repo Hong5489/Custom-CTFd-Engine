@@ -12,6 +12,8 @@ from CTFd.models import (
     Submissions,
     Fails,
     ChallengeFiles as ChallengeFilesModel,
+    Ports,
+    Category,
 )
 from CTFd.plugins.challenges import get_chal_class, CHALLENGE_CLASSES
 from CTFd.utils.dates import ctf_ended, isoformat
@@ -233,6 +235,12 @@ class Challenge(Resource):
         response['files'] = files
         response['tags'] = tags
         response['hints'] = hints
+        if chal.type == "web":
+            if chal.ports:
+                for p in chal.ports:
+                    if p.team_id == get_current_team().id:
+                        response['ports'] = p.number
+                        break
 
         db.session.close()
         return {
@@ -260,6 +268,109 @@ class Challenge(Resource):
         return {
             'success': True,
         }
+@challenges_namespace.route('/ports')
+class ChallengeManagePorts(Resource):
+    @during_ctf_time_only
+    @require_verified_emails
+    def post(self):
+        if authed() is False:
+            return {
+                'success': True,
+                'data': {
+                    'status': "authentication_required",
+                }
+            }, 403
+
+        if request.content_type != 'application/json':
+            request_data = request.form
+        else:
+            request_data = request.get_json()
+        close = request.args.get('close', False)
+
+        challenge_id = request_data.get('challenge_id')
+        challenge = Challenges.query.filter_by(id=challenge_id).first_or_404()
+        team = get_current_team()
+        port = Ports.query.filter_by(challenge_id=challenge_id,team_id=team.id).first()
+
+        if close:
+            if port == None:
+                return {
+                    'success': True,
+                    'data': {
+                        'status': "incorrect",
+                        'message': "Another member already closed"
+                    }
+                }
+            db.session.delete(port)
+            db.session.commit()
+            from fyp import closePort
+            closePort(challenge.docker_name,port.id)
+            return {
+                'success': True,
+                'data': {
+                    'status': "already_solved",
+                    'message': "Successfully closed port %i" % port.number
+                }
+            }
+        if port:
+            return {
+                'success': True,
+                'data': {
+                    'status': "incorrect",
+                    'message': "Another member already opened"
+                }
+            }
+        max_port_id = db.session.query(db.func.max(Ports.id)).scalar()
+        if max_port_id:
+            port = Ports(
+                number = max_port_id + 3000
+            )
+        else:
+            port = Ports(
+                number = 3000
+            )
+        db.session.add(port)
+        port.team_id = team.id
+        port.challenge_id = challenge_id
+        db.session.commit()
+        flag = Flags.query.filter_by(challenge_id=challenge.id).first_or_404()
+        from fyp import createPort
+        createPort(challenge,flag.content,team,port)
+        return {
+            'success': True,
+            'data': {
+                'status': "already_solved",
+                'message': "Successfully created port %i" % port.number,
+                'number': port.number
+            }
+        }
+
+@challenges_namespace.route('/category')
+class ChallengeCategory(Resource):
+    @during_ctf_time_only
+    @require_verified_emails
+    def get(self):
+        from fyp import showCategory
+        return {
+            'data': showCategory()
+        }
+
+
+    @admins_only
+    def post(self):
+        if request.content_type != 'application/json':
+            request_data = request.form
+        else:
+            request_data = request.get_json()
+        data = request_data.get("data")
+        from CTFd.utils.migrations import get_engine
+        Category.query.delete()
+        db.session.commit()
+        import re
+        for i in re.findall("<span>.*</span>",data):
+            db.session.add(Category(name=i[6:-7]))
+        db.session.commit()
+        return "Success"
 
 
 @challenges_namespace.route('/attempt')

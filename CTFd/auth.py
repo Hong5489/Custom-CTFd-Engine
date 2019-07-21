@@ -161,7 +161,7 @@ def register():
             errors.append('Pick a shorter password')
         if name_len:
             errors.append('Pick a longer team name')
-	if ' ' in name:
+        if ' ' in name:
             errors.append('Your User name should not contain space')
         if len(errors) > 0:
             return render_template(
@@ -183,13 +183,13 @@ def register():
                 db.session.flush()
 
                 login_user(user)
-		system("docker exec server-skr useradd -m %s -s /bin/bash" % name.strip())
-                system('''docker exec server-skr bash -c 'echo "%s:%s" | chpasswd' ''' % (name.strip(),password.strip()))
-                system("docker exec server-skr chmod 700 /home/%s" % name.strip())
-		system("docker exec server-skr cp -r /home/user/. /home/%s/" % name.strip())
-		system("docker exec server-skr chmod 4755 /home/%s/challenges/binary1/overflow" % name.strip())
-		system("docker exec server-skr chmod 4755 /home/%s/challenges/binary2/overflow2" % name.strip())
-		system("docker exec server-skr chmod 4755 /home/%s/challenges/format-string/format-string" % name.strip())
+                # system("docker exec server-skr useradd -m %s -s /bin/bash" % name.strip())
+                # system('''docker exec server-skr bash -c 'echo "%s:%s" | chpasswd' ''' % (name.strip(),password.strip()))
+                # system("docker exec server-skr chmod 700 /home/%s" % name.strip())
+                # system("docker exec server-skr cp -r /home/user/. /home/%s/" % name.strip())
+                # system("docker exec server-skr chmod 4755 /home/%s/challenges/binary1/overflow" % name.strip())
+                # system("docker exec server-skr chmod 4755 /home/%s/challenges/binary2/overflow2" % name.strip())
+                # system("docker exec server-skr chmod 4755 /home/%s/challenges/format-string/format-string" % name.strip())
                 if config.can_send_mail() and get_config('verify_emails'):  # Confirming users is enabled and we can send email.
                     log('registrations', format="[{date}] {ip} - {name} registered (UNCONFIRMED) with {email}")
                     email.verify_email_address(user.email)

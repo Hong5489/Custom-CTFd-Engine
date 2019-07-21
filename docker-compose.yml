@@ -47,6 +47,16 @@ services:
     networks:
         internal:
 
+  server-skr:
+    container_name: "server-skr"
+    build: ../server-skr
+    ports:
+      - "3004:22"
+    hostname: "server-skr"
+    volumes:
+      - "../server-skr/home:/home"
+      - "../server-skr/ctfuser:/ctfuser"
+      
 networks:
     default:
     internal:

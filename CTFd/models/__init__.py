@@ -475,9 +475,11 @@ class Teams(db.Model):
     name = db.Column(db.String(128))
     email = db.Column(db.String(128), unique=True)
     password = db.Column(db.String(128))
-    secret = db.Column(db.String(128))
+    from os import urandom
+    secret = db.Column(db.String(128),default=urandom(16).encode('hex'))
 
     members = db.relationship("Users", backref="team")
+    ports = db.relationship("Ports", backref="team")
 
     # Supplementary attributes
     website = db.Column(db.String(128))
@@ -770,6 +772,23 @@ class Configs(db.Model):
     def __init__(self, *args, **kwargs):
         super(Configs, self).__init__(**kwargs)
 
+class Ports(db.Model):
+    __tablename__ = 'ports'
+    id = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.Integer)
+    team_id = db.Column(db.Integer, db.ForeignKey('teams.id'))
+    challenge_id = db.Column(db.Integer, db.ForeignKey('challenges.id'))
+
+    def __init__(self, *args, **kwargs):
+        super(Ports, self).__init__(**kwargs)
+
+class Category(db.Model):
+    __tablename__ = 'category'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    
+    def __init__(self, *args, **kwargs):
+        super(Category, self).__init__(**kwargs)
 
 @cache.memoize()
 def get_config(key):
