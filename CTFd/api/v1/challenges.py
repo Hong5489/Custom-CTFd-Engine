@@ -320,15 +320,14 @@ class ChallengeManagePorts(Resource):
                     'message': "Another member already opened"
                 }
             }
-        max_port_id = db.session.query(db.func.max(Ports.id)).scalar()
-        if max_port_id:
-            port = Ports(
-                number = max_port_id + 3000
-            )
-        else:
-            port = Ports(
-                number = 3000
-            )
+        ports_id = [i[0] for i in db.session.query(Ports.number)]
+        target_port = 4000
+        while target_port in ports_id:
+            target_port += 1
+
+        port = Ports(
+            number = target_port
+        )
         db.session.add(port)
         port.team_id = team.id
         port.challenge_id = challenge_id

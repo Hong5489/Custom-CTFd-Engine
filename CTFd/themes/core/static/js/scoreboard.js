@@ -89,6 +89,11 @@ function scoregraph () {
             },
             legend: {
                 "orientation": "h"
+            },
+            font: {
+                family: 'Courier New, monospace',
+                size: 12,
+                color: '#ffffff'
             }
         };
 

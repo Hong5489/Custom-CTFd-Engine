@@ -144,3 +144,17 @@
 		/* from https://fonts.gstatic.com/s/raleway/v12/lFxvRPuGFG5ktd7P0WRwKonF5uFdDttMLvmWuJdhhgs.ttf */
 		url('raleway/Raleway_700i.ttf') format('truetype');
 }
+@font-face {
+	font-family: 'Pixel';
+	font-style: normal;
+	font-weight: 400;
+	src:
+		url('pixel/PixelOperator.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Pixel';
+	font-style: normal;
+	font-weight: bold;
+	src:
+		url('pixel/PixelOperator-Bold.ttf') format('truetype');
+}

@@ -56,7 +56,7 @@ services:
     volumes:
       - "../server-skr/home:/home"
       - "../server-skr/ctfuser:/ctfuser"
-      
+
 networks:
     default:
     internal:

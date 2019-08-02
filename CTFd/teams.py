@@ -94,6 +94,7 @@ def new():
         system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (teamname,teamname))
         system("docker exec server-skr cp /etc/passwd /ctfuser")
         system("docker exec server-skr cp /etc/shadow /ctfuser")
+        system("docker exec server-skr cp /etc/group /ctfuser")
 
         from fyp import generateBinaryFlag
         generateBinaryFlag(team)

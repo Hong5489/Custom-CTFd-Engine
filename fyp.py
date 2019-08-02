@@ -21,7 +21,7 @@ def createPort(challenge,flag,team,port):
 
 def closePort(docker_name,port_id):
 	from os import system
-	system("docker stop %s_%i; docker rm %s_%i" % (docker_name,port_id,docker_name,port_id))
+	system("docker stop %s_%i -t 0; docker rm %s_%i" % (docker_name,port_id,docker_name,port_id))
 
 def showCategory():
 	from CTFd.models import db,Category,Challenges
