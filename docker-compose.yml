@@ -56,6 +56,7 @@ services:
     volumes:
       - "../server-skr/home:/home"
       - "../server-skr/ctfuser:/ctfuser"
+      - "../server-skr/motd:/etc/motd"
 
 networks:
     default:
