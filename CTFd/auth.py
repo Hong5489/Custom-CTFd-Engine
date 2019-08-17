@@ -132,12 +132,14 @@ def register():
         name = request.form['name']
         email_address = request.form['email']
         password = request.form['password']
+        confirm_password = request.form['confirm-password']
 
         name_len = len(name) == 0
         names = Users.query.add_columns('name', 'id').filter_by(name=name).first()
         emails = Users.query.add_columns('email', 'id').filter_by(email=email_address).first()
         pass_short = len(password) == 0
         pass_long = len(password) > 128
+        pass_match = password == confirm_password
         valid_email = validators.validate_email(request.form['email'])
         team_name_email_check = validators.validate_email(name)
 
@@ -150,19 +152,20 @@ def register():
                     )
                 )
         if names:
-            errors.append('That team name is already taken')
+            errors.append('That username is already taken')
         if team_name_email_check is True:
-            errors.append('Your team name cannot be an email address')
+            errors.append('Your username cannot be an email address')
         if emails:
             errors.append('That email has already been used')
         if pass_short:
             errors.append('Pick a longer password')
         if pass_long:
             errors.append('Pick a shorter password')
+        if not pass_match:
+            errors.append("Password does not match")
         if name_len:
             errors.append('Pick a longer team name')
-        if ' ' in name:
-            errors.append('Your User name should not contain space')
+        
         if len(errors) > 0:
             return render_template(
                 'register.html',
@@ -183,13 +186,6 @@ def register():
                 db.session.flush()
 
                 login_user(user)
-                # system("docker exec server-skr useradd -m %s -s /bin/bash" % name.strip())
-                # system('''docker exec server-skr bash -c 'echo "%s:%s" | chpasswd' ''' % (name.strip(),password.strip()))
-                # system("docker exec server-skr chmod 700 /home/%s" % name.strip())
-                # system("docker exec server-skr cp -r /home/user/. /home/%s/" % name.strip())
-                # system("docker exec server-skr chmod 4755 /home/%s/challenges/binary1/overflow" % name.strip())
-                # system("docker exec server-skr chmod 4755 /home/%s/challenges/binary2/overflow2" % name.strip())
-                # system("docker exec server-skr chmod 4755 /home/%s/challenges/format-string/format-string" % name.strip())
                 if config.can_send_mail() and get_config('verify_emails'):  # Confirming users is enabled and we can send email.
                     log('registrations', format="[{date}] {ip} - {name} registered (UNCONFIRMED) with {email}")
                     email.verify_email_address(user.email)

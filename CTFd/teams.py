@@ -66,15 +66,23 @@ def new():
     elif request.method == 'POST':
         teamname = request.form.get('name')
         passphrase = request.form.get('password', '').strip()
+        confirm_passphrase = request.form.get('confirm-password').strip()
         errors = get_errors()
 
         user = get_current_user()
 
         existing_team = Teams.query.filter_by(name=teamname).first()
+        pass_match = passphrase == confirm_passphrase
         if existing_team:
             errors.append('That team name is already taken')
         if not teamname:
             errors.append('That team name is invalid')
+        for s in '!"#$%&\'()*+,./:;<=>?@[\\]^`{|}~ ':
+            if s in teamname:
+                errors.append('Your User name should not contain space and symbol %score'%s)
+                break
+        if not pass_match:
+            errors.append('Password does not match')
 
         if errors:
             return render_template("teams/new_team.html", errors=errors)
