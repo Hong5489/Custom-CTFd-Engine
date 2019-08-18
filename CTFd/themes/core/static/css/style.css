@@ -1,7 +1,7 @@
 
-html, body, .container {
-    height: 100% !important;
-    font-family: 'Lato', 'LatoOffline', sans-serif;
+html,body,.container {
+  font-family: "Press Start 2P", "Press Start 2P", sans-serif;
+  font-size: 0.9rem;
 }
 
 h1, h2 {
