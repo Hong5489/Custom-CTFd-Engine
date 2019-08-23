@@ -17,6 +17,14 @@ function loadchal(id) {
         });
         return;
     }
+    if (obj.lock){
+        ezal({
+            title: "Challenge Locked!",
+            body: "You haven't unlocked this challenge yet!",
+            button: "Got it!"
+        });
+        return;
+    }
 
     updateChalWindow(obj);
 }
@@ -261,22 +269,26 @@ function loadchals(cb) {
             var chalid = chalinfo.name.replace(/ /g, "-").hashCode();
             var catid = chalinfo.category.replace(/ /g, "-").hashCode();
             var chalwrap = $("<div id='{0}' class='col-md-3 d-inline-block'></div>".format(chalid));
+            if(!chalinfo.lock){
+                if (user_solves.indexOf(chalinfo.id) == -1) {
+                    var chalbutton = $("<button class='btn btn-dark challenge-button w-100 text-truncate pt-3 pb-3 mb-2' value='{0}'></button>".format(chalinfo.id));
+                } else {
+                    var chalbutton = $("<button class='btn btn-dark challenge-button solved-challenge w-100 text-truncate pt-3 pb-3 mb-2' value='{0}'><i class='fas fa-check corner-button-check'></i></button>".format(chalinfo.id));
+                }
 
-            if (user_solves.indexOf(chalinfo.id) == -1) {
-                var chalbutton = $("<button class='btn btn-dark challenge-button w-100 text-truncate pt-3 pb-3 mb-2' value='{0}'></button>".format(chalinfo.id));
-            } else {
-                var chalbutton = $("<button class='btn btn-dark challenge-button solved-challenge w-100 text-truncate pt-3 pb-3 mb-2' value='{0}'><i class='fas fa-check corner-button-check'></i></button>".format(chalinfo.id));
+                var chalheader = $("<p>{0}</p>".format(chalinfo.name));
+                var chalscore = $("<span>{0}</span>".format(chalinfo.value));
+                for (var j = 0; j < chalinfo.tags.length; j++) {
+                    var tag = 'tag-' + chalinfo.tags[j].value.replace(/ /g, '-');
+                    chalwrap.addClass(tag);
+                }
+
+                chalbutton.append(chalheader);
+                chalbutton.append(chalscore);
+            }else{
+                var chalbutton = $("<button class='btn btn-dark challenge-button w-100 text-truncate pt-3 pb-3 mb-2' value='{0}'><i class='fas fa-lock fa-4x'></i></button>".format(chalinfo.id));
             }
-
-            var chalheader = $("<p>{0}</p>".format(chalinfo.name));
-            var chalscore = $("<span>{0}</span>".format(chalinfo.value));
-            for (var j = 0; j < chalinfo.tags.length; j++) {
-                var tag = 'tag-' + chalinfo.tags[j].value.replace(/ /g, '-');
-                chalwrap.addClass(tag);
-            }
-
-            chalbutton.append(chalheader);
-            chalbutton.append(chalscore);
+            
             chalwrap.append(chalbutton);
 
             $("#" + catid + "-row").find(".category-challenges > .challenges-row").append(chalwrap);

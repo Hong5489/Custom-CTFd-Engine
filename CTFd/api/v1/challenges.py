@@ -74,6 +74,7 @@ class ChallengeList(Resource):
         response = []
         tag_schema = TagSchema(view='user', many=True)
         for challenge in challenges:
+            challenge_type = get_chal_class(challenge.type)
             if challenge.requirements:
                 requirements = challenge.requirements.get('prerequisites', [])
                 anonymize = challenge.requirements.get('anonymize')
@@ -81,21 +82,33 @@ class ChallengeList(Resource):
                 if solve_ids >= prereqs:
                     pass
                 else:
-                    if anonymize:
-                        response.append({
-                            'id': challenge.id,
-                            'type': 'hidden',
-                            'name': '???',
-                            'value': 0,
-                            'category': '???',
-                            'tags': [],
-                            'template': '',
-                            'script': ''
-                        })
-                    # Fallthrough to continue
+                    response.append({
+                        'id': challenge.id,
+                        'type': challenge_type.name,
+                        'name': challenge.name,
+                        'value': challenge.value,
+                        'category': challenge.category,
+                        'tags': tag_schema.dump(challenge.tags).data,
+                        'template': challenge_type.templates['view'],
+                        'script': challenge_type.scripts['view'],
+                        'lock':True,
+                    })
                     continue
-
-            challenge_type = get_chal_class(challenge.type)
+            #         pass
+            #     else:
+            #         if anonymize:
+            #             response.append({
+            #                 'id': challenge.id,
+            #                 'type': 'hidden',
+            #                 'name': '???',
+            #                 'value': 0,
+            #                 'category': '???',
+            #                 'tags': [],
+            #                 'template': '',
+            #                 'script': ''
+            #             })
+            #         # Fallthrough to continue
+            #         continue
             response.append({
                 'id': challenge.id,
                 'type': challenge_type.name,
@@ -105,7 +118,9 @@ class ChallengeList(Resource):
                 'tags': tag_schema.dump(challenge.tags).data,
                 'template': challenge_type.templates['view'],
                 'script': challenge_type.scripts['view'],
+                'lock':False,
             })
+
 
         db.session.close()
         return {
