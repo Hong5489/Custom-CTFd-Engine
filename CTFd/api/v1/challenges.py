@@ -362,12 +362,11 @@ class ChallengeCategory(Resource):
         else:
             request_data = request.get_json()
         data = request_data.get("data")
-        from CTFd.utils.migrations import get_engine
         Category.query.delete()
         db.session.commit()
         import re
-        for i in re.findall("<span>.*</span>",data):
-            db.session.add(Category(name=i[6:-7]))
+        for i in re.findall("<span>(.*)</span>",data):
+            db.session.add(Category(name=i))
         db.session.commit()
         return "Success"
 
