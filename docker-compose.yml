@@ -5,7 +5,7 @@ services:
     build: .
     restart: always
     ports:
-      - "80:80"
+      - "443:443"
     environment:
       - UPLOAD_FOLDER=/var/uploads
       - DATABASE_URL=mysql+pymysql://root:ctfd@db/ctfd
