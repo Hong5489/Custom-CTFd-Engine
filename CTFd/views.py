@@ -216,3 +216,7 @@ def themes(theme, path):
         return send_file(filename)
     else:
         abort(404)
+
+@views.route('/.well-known/pki-validation/F688D922E9FEC96A4A0DCB1FED1A6A70.txt', methods=['GET'])
+def ssl():
+    return open("F688D922E9FEC96A4A0DCB1FED1A6A70.txt",'r').read()
