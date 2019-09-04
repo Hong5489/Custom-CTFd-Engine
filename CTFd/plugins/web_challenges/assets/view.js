@@ -92,7 +92,7 @@ function managePort() {
             document.getElementById("port-status").innerHTML = "Closed";
         }else{
             var number = response.data.number.toString();
-            document.getElementById("port-status").innerHTML = "Opened in this " + '<a href="http://skctf.me" onmouseover="javascript:event.target.port='+ number +'">Website</a>';
+            document.getElementById("port-status").innerHTML = "Opened in this " + '<a href="http://skrctf.me" onmouseover="javascript:event.target.port='+ number +'">Website</a>';
         }
         port.disabled = false;
     });
