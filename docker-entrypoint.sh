@@ -39,9 +39,7 @@ python manage.py db upgrade
 # Start CTFd
 echo "Starting CTFd"
 exec gunicorn 'CTFd:create_app()' \
-    --bind '0.0.0.0:443' \
-    --certfile ~/ssl/www_skrctf_me.crt \
-    --keyfile ~/ssl/private-key.pem \
+    --bind '0.0.0.0:8000' \
     --workers $WORKERS \
     --worker-class "$WORKER_CLASS" \
     --access-logfile "$ACCESS_LOG" \
