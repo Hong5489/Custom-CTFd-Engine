@@ -8,6 +8,14 @@ function load_chal_template(challenge){
         $.get(script_root + challenge.templates.create, function (template_data) {
             var template = nunjucks.compile(template_data);
             $("#create-chal-entry-div").html(template.render({'nonce': nonce, 'script_root': script_root}));
+            $.get(script_root + '/api/v1/challenges/category', function(response){
+                var data = response.data;
+                for (var key of data){
+                    var option = $("<option/>");
+                    option.text(key);
+                    $("#category-select").append(option);
+                }
+            });
             $.getScript(script_root + challenge.scripts.create, function () {
                 console.log('loaded');
                 $("#create-chal-entry-div form").submit(function (e) {
@@ -59,4 +67,5 @@ $.get(script_root + '/api/v1/challenges/types', function(response){
 $('#create-chals-select').change(function(){
     var challenge = $(this).find("option:selected").data('meta');
     load_chal_template(challenge);
+    
 });

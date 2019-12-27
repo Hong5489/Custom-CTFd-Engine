@@ -11,19 +11,21 @@ import six
 @admin.route('/admin/challenges')
 @admins_only
 def challenges_listing():
+    from fyp import showCategory
     challenges = Challenges.query.all()
-    return render_template('admin/challenges/challenges.html', challenges=challenges)
+    return render_template('admin/challenges/challenges.html', challenges=challenges,category=showCategory())
 
 @admin.route('/admin/category')
 @admins_only
 def category_listing():
     from fyp import showCategory
-    return render_template('admin/challenges/category.html', category=enumerate(showCategory()))
+    return render_template('admin/category/category.html', category=enumerate(showCategory()))
 
 
 @admin.route('/admin/challenges/<int:challenge_id>')
 @admins_only
 def challenges_detail(challenge_id):
+    from fyp import showCategory
     challenges = dict(Challenges.query.with_entities(Challenges.id, Challenges.name).all())
     challenge = Challenges.query.filter_by(id=challenge_id).first_or_404()
     solves = Solves.query.filter_by(challenge_id=challenge.id).all()
@@ -47,7 +49,8 @@ def challenges_detail(challenge_id):
         challenge=challenge,
         challenges=challenges,
         solves=solves,
-        flags=flags
+        flags=flags,
+        category=showCategory()[challenge.category_id]
     )
 
 
@@ -55,3 +58,8 @@ def challenges_detail(challenge_id):
 @admins_only
 def challenges_new():
     return render_template('admin/challenges/new.html')
+
+@admin.route('/admin/category/new')
+@admins_only
+def category_new():
+    return render_template('admin/category/new.html')

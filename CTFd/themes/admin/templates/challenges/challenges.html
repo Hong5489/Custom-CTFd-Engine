@@ -37,7 +37,7 @@
 						<tr>
 							<td>{{ challenge.id }}</td>
 							<td><a href="{{ url_for('admin.challenges_detail', challenge_id=challenge.id) }}">{{ challenge.name }}</a></td>
-							<td class="d-none d-md-table-cell d-lg-table-cell">{{ challenge.category }}</td>
+							<td class="d-none d-md-table-cell d-lg-table-cell">{{ category[challenge.category_id] }}</td>
 							<td class="d-none d-md-table-cell d-lg-table-cell">{{ challenge.value }}</td>
 							<td class="d-none d-md-table-cell d-lg-table-cell">{{ challenge.type }}</td>
 							<td class="d-none d-md-table-cell d-lg-table-cell text-center">

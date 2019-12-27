@@ -6,7 +6,7 @@ services:
     restart: always
     # Included NGINX config used hostname to determine what it's server_name will be 
     # Either set NGINX_HOSTNAME to it's public DNS name, change this line, or the config
-    hostname: ${NGINX_HOSTNAME:-skrctf.me}
+    hostname: ${NGINX_HOSTNAME:-localhost}
     ports:
       - "80:8000"
       - "443:8443"
@@ -29,7 +29,7 @@ services:
       - UPLOAD_FOLDER=/var/uploads
       - DATABASE_URL=mysql+pymysql://root:ctfd@db/ctfd
       - REDIS_URL=redis://cache:6379
-      - WORKERS=4
+      - WORKERS=1
       - USE_SSL=false
       - REVERSE_PROXY=true
       - LOG_FOLDER=/var/log/CTFd

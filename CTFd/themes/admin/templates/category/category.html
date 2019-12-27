@@ -33,7 +33,7 @@
 					<i class="btn-fa fas fa-save"></i>
 				</span>
 			</a>
-            <a class="no-decoration" onclick="save()">
+            <a href="{{ url_for('admin.category_new') }}" class="no-decoration">
                 <span role="button" data-toggle="tooltip" title="Add Category">
                     <i class="btn-fa fas fa-plus-circle"></i>
                 </span>
@@ -102,3 +102,4 @@
 	}
 </script>
 {% endblock %}
+

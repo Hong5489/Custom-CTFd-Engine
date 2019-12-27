@@ -1,0 +1,26 @@
+<div role="tabpanel" class="tab-pane" id="server">
+
+	<form autocomplete="off" class="w-100">
+		<div class="form-group">
+			<label>
+				Update Binary Challenge
+				<small class="form-text text-muted">
+					Click to update all teams to the latest binary challenges 
+				</small>
+			</label>
+			<button class="btn btn-md btn-primary float-right" onclick="update_binary()">Update</button>
+		</div>
+
+	</form>
+	<div class="form-group">
+		<label>
+			New Binary Challenge
+			<small class="form-text text-muted">
+				Type the C source code here
+			</small>
+		</label>
+		<input class="form-control" id="file_name" name="file_name" type="text" placeholder="Folder and File Name"><br>
+		<textarea class="form-control" id="file_content" name="file" rows="7"></textarea>
+	<button class="btn btn-md btn-primary float-right" onclick="create_binary()">Create</button>
+	</div>
+</div>

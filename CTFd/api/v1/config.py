@@ -69,6 +69,24 @@ class ConfigList(Resource):
             'success': True
         }
 
+@configs_namespace.route('/updateBinary')
+class UpdateBinary(Resource):
+    @admins_only
+    def get(self):
+        from fyp import updateBinaryChallenge
+        return {
+            'data': updateBinaryChallenge()
+        }
+
+@configs_namespace.route('/createBinary')
+class CreateBinary(Resource):
+    @admins_only
+    def post(self):
+        req = request.get_json()
+        return {
+            'data': str(request.get_json())
+        }
+
 
 @configs_namespace.route('/<config_key>')
 class Config(Resource):

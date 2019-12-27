@@ -385,6 +385,18 @@ class ChallengeCategory(Resource):
         db.session.commit()
         return "Success"
 
+@challenges_namespace.route('/category/new')
+class ChallengeNewCategory(Resource):
+    @admins_only
+    def post(self):
+        if request.content_type != 'application/json':
+            request_data = request.form
+        else:
+            request_data = request.get_json()
+        name = request_data.get("name")
+        db.session.add(Category(name=name))
+        db.session.commit()
+        return "Success"
 
 @challenges_namespace.route('/attempt')
 class ChallengeAttempt(Resource):

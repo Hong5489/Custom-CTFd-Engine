@@ -109,6 +109,7 @@ class Challenges(db.Model):
     max_attempts = db.Column(db.Integer, default=0)
     value = db.Column(db.Integer)
     category = db.Column(db.String(80))
+    category_id = db.Column(db.Integer,db.ForeignKey('category.id'),default=0)
     type = db.Column(db.String(80))
     state = db.Column(db.String(80), nullable=False, default='visible')
     requirements = db.Column(JSON)
@@ -786,6 +787,7 @@ class Category(db.Model):
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
+    challenges = db.relationship("Challenges", backref="categories")
     
     def __init__(self, *args, **kwargs):
         super(Category, self).__init__(**kwargs)

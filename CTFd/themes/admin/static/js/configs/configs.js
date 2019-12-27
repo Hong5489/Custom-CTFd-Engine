@@ -120,6 +120,35 @@ function update_configs(obj){
     });
 }
 
+function update_binary(){
+    CTFd.fetch('/api/v1/configs/updateBinary',{
+        method:'GET'
+    }).then(function(response) {
+        return response.json()
+    }).then(function(data) {
+        window.location.reload();
+    });
+}
+
+function create_binary(){
+    var params = {
+        'file_name':document.getElementById("file_name").value,
+        'file':document.getElementById("file_content").value
+    };
+
+    CTFd.fetch('/api/v1/configs/createBinary',{
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(params)
+    }).then(function(response) {
+        return response.json()
+    });
+}
+
 function upload_logo(form) {
     upload_files(form, function (response) {
         var upload = response.data[0];
