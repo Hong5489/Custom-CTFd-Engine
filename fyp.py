@@ -24,13 +24,13 @@ def updateBinaryChallenge():
 		team_name = e.split(":x:")[0]
 		team = Teams.query.filter_by(name=team_name).first_or_404()
 		system("docker exec server-skr cp -rp /ctf/. /home/%s/" % team_name)
-        system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (team_name,team_name))
-        generateBinaryFlag(team)
+        	system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (team_name,team_name))
+        	generateBinaryFlag(team)
 	return "Success!"
 
 def createBinaryChallenge():
 	from os import system
-	
+
 
 def createPort(challenge,flag,team,port):
 	from os import system

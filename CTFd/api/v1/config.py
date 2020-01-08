@@ -74,9 +74,14 @@ class UpdateBinary(Resource):
     @admins_only
     def get(self):
         from fyp import updateBinaryChallenge
-        return {
-            'data': updateBinaryChallenge()
-        }
+        try:
+		return {
+            		'data': updateBinaryChallenge()
+        	}
+	except Exception as e:
+		return {
+			'data': str(e)
+		}
 
 @configs_namespace.route('/createBinary')
 class CreateBinary(Resource):
