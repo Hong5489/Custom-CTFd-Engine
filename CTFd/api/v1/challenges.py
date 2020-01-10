@@ -319,7 +319,7 @@ class ChallengeManagePorts(Resource):
             db.session.delete(port)
             db.session.commit()
             from fyp import closePort
-            closePort(challenge.docker_name,port.id)
+            closePort(port.number)
             return {
                 'success': True,
                 'data': {

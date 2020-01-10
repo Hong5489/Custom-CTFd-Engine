@@ -34,11 +34,11 @@ def createBinaryChallenge():
 
 def createPort(challenge,flag,team,port):
 	from os import system
-	system("docker run -d --name %s_%i -e FLAG=%s -p %i:80 %s" %(challenge.docker_name,port.id,generateFlag(flag,team),port.number,challenge.docker_name))
+	system("docker run -d --name web_%i -e FLAG=%s -p %i:80 --network=\"custom-ctfd-engine_default\" %s" %(port.number,generateFlag(flag,team),port.number,challenge.docker_name))
 
-def closePort(docker_name,port_id):
+def closePort(port_number):
 	from os import system
-	system("docker stop %s_%i -t 0; docker rm %s_%i" % (docker_name,port_id,docker_name,port_id))
+	system("docker stop web_%i -t 0; docker rm web_%i" % (port_number,port_number))
 
 def showCategory():
 	from CTFd.models import db,Category,Challenges
