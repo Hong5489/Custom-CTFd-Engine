@@ -37,9 +37,9 @@
 							{% endif %}
 							<span class="slider"></span>
 						</label>
-						<div id="port-status" class="challenge-desc pt-2 pl-3">
+						<div id="port-status" class="challenge-desc mb-3 pl-3">
 							{% if ports %}
-								Opened in this <a href="https://skrctf.me/ports/{{ ports }}/" target="_blank">Website</a> or <a href="http://skrctf.me" onmouseover="javascript:event.target.port={{ ports }}" target="_blank">Here</a> if got any problem
+								Opened in this <a href="https://skrctf.me/ports/{{ ports }}/" target="_blank">Website</a><br>or <a href="http://skrctf.me" onmouseover="javascript:event.target.port={{ ports }}" target="_blank">Here</a> if got any problem
 							{% else %}
 								Closed
 							{% endif %}
@@ -47,7 +47,7 @@
 						</div>
 						<div class="challenge-hints hint-row row">
 							{% for hint in hints %}
-								<div class='col-md-12 hint-button-wrapper text-center mb-3'>
+								<div class='col-md-12 hint-button-wrapper text-center mt-1 mb-3'>
 									<a class="btn btn-info btn-hint btn-block" href="javascript:;"
 									   onclick="javascript:loadhint({{ hint.id }})">
 										{% if hint.hint %}
