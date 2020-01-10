@@ -39,7 +39,7 @@
 						</label>
 						<div id="port-status" class="challenge-desc pt-2 pl-3">
 							{% if ports %}
-								Opened in this <a href="https://skrctf.me/{{ ports }}/" target="_blank">Website</a>
+								Opened in this <a href="https://skrctf.me/{{ ports }}/" target="_blank">Website</a> or <a href="http://skrctf.me" onmouseover="javascript:event.target.port={{ ports }}" target="_blank">Here</a> if got any problem
 							{% else %}
 								Closed
 							{% endif %}
