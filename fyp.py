@@ -4,7 +4,7 @@ def generateFlag(flag,team):
 	index = flag.find('{')
 	flag_format = flag[:index]
 	flag = flag[index+1:-1]
-	hashflag = hashlib.md5(team.name+flag+team.secret+str(time.mktime(team.created.timetuple()))).hexdigest()
+	hashflag = hashlib.md5(team.name+flag+team.secret+str(time.mktime(team.created.timetuple()))).hexdigest()[:6]
 	return "%s{%s_%s}" % (flag_format,flag,hashflag)
 
 def generateBinaryFlag(team):
@@ -35,10 +35,11 @@ def createBinaryChallenge():
 def createPort(challenge,flag,team,port):
 	from os import system
 	system("docker run -d --name web_%i -e FLAG=%s -p %i:80 --network=\"custom-ctfd-engine_default\" %s" %(port.number,generateFlag(flag,team),port.number,challenge.docker_name))
+	system("docker stop web_%i -t 1800 && docker rm web_%i && docker exec custom-ctfd-engine_db_1 bash -c \"mysql -uroot -pctfd ctfd -e 'delete from ports where number = %i;'\" &" % (port.number,port.number,port.number))
 
 def closePort(port_number):
 	from os import system
-	system("docker stop web_%i -t 0; docker rm web_%i" % (port_number,port_number))
+	system("docker stop web_%i -t 0; docker rm web_%i; docker network disconnect -f custom-ctfd-engine_default web_%i" % (port_number,port_number,port_number))
 
 def showCategory():
 	from CTFd.models import db,Category,Challenges
