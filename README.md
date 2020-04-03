@@ -2,6 +2,8 @@
 ## Features
 - Flag Sharing Prevention
 - Dynamic Flag for Web Challenges and Binary Challenges
+- Web Shell login using Team Credentials
+- Reverse Proxy for Web Challenges
 
 First run this:
 ```
@@ -29,26 +31,24 @@ Go to /admin/config, enter the following code to Stylesheet editor and press **U
 html,
 body,
 .container {
-  font-family: "Press Start 2P", "Press Start 2P", sans-serif;
-  font-size: 0.9rem;
+  font-family: "Volter", "Volter", sans-serif;
 }
 body{
 background-color: #0c0d16;
 color: #e4e2ff;
 }
 
-h1,
-h2 {
-  font-family: "Press Start 2P", "Press Start 2P", sans-serif;
-  font-weight: 500;
-  text-shadow: -1px 3px #222
-  letter-spacing: 2px;
+h1{
+  font-family: "fuck", "fuck", sans-serif;
+}
+h2{
+ font-family: "Volter", "Volter", sans-serif;
 }
 .btn{
-  font-size: 0.75rem;
+  font-size: 0.85rem;
 }
 .h1,h1 {
-    font-size: 2.25rem
+    font-size: 4.25rem
 }
 
 .h2,h2 {
@@ -71,8 +71,9 @@ background-color: #32334a;
     background-color: #714cdf !important;
     border-color: #714cdf !important;
 }
-.btn-outline-secondary{
-border-color: #87c4f2;
+.btn-outline-secondary {
+color: #17b06b;
+border-color: #17b06b
 }
 
 .btn-outline-secondary:hover {
@@ -86,11 +87,11 @@ box-shadow: 0 0 0 .2rem rgba(23, 176, 107, .5)
 }
 kbd {
 padding: .2rem .4rem;
-font-size: 125%;
+font-size: 100%;
 border-radius: .2rem
 }
 code {
-font-size: 125%;
+font-size: 100%;
 color: #17b06b;
 }
 .solved-challenge {
