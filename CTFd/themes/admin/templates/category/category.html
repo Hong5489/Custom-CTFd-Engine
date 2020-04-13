@@ -47,15 +47,18 @@
 			<table class="table table-sortable table-striped">
                 <thead>
                 <tr>
-                    <th>Order</th>
+                    <th>ID</th>
                     <th>Name</th>
+                    <th>Description</th>
                 </tr>
                 </thead>
                 <tbody id="body">
                 {% for i,c in category %}
                 <tr>
-                    <td>{{ i+1 }}</td>
-                    <td><span>{{ c }}</span></td>
+                    <td>{{ i }}</td>
+                    <td><span>{{ c.name }}</span></td>
+                    <td>{{ c.description }}</td>
+                    <td><a class="fas fa-edit" href="{{ url_for('admin.category_edit',category_id=c.id) }}"></a></td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -73,7 +76,7 @@
         });
 	});
 	function save(){
-		var url = "/api/v1/challenges/category";
+		var url = "/api/v1/category";
 		var params = {
         	'data': document.getElementById("body").innerHTML,
     	};

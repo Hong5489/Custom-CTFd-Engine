@@ -44,16 +44,17 @@ def closePort(port_number):
 def showCategory():
 	from CTFd.models import db,Category,Challenges
 	categories = Category.query.all()
-	categories = [i.name for i in categories]
+	categories_name = [i.name for i in categories]
 	challenges = Challenges.query.all()
 	for c in challenges:
-		for i,name in enumerate(categories):
+		for i,name in enumerate(categories_name):
 			if c.category == name:
 				c.category_id = i
 	db.session.commit()
-	response = []
-	for c in categories:
-	 	response.append(c)
+	return categories_name
+	# response = []
+	# for c in categories:
+	#  	response.append(c)
 	# if len(categories) == 0:
 	# 	total_category = [i[0] for i in db.session.query(Challenges.category)]
 	# 	for c in total_category:
@@ -80,7 +81,24 @@ def showCategory():
 	# 					response.remove(c)
 	# 					db.session.delete(Category.query.filter_by(name=c).one())
 	# 		db.session.commit()
+	#return response
+
+def showCategoryDesc():
+	from CTFd.models import Category
+	response = []
+	category = Category.query.all()
+	for c in category:
+		response.append({
+		    "id": c.id,
+		    "name": c.name,
+		    "description": c.description
+		})
 	return response
+
+def selectCategory(id):
+	from CTFd.models import Category
+	c = Category.query.filter_by(id=id).first_or_404()
+	return c
 
 def currentCategory():
 	response = []

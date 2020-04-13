@@ -241,24 +241,44 @@ function loadchals(cb) {
         challenges = response.data;
 
         $('#challenges-board').empty();
-        $.get(script_root + "/api/v1/challenges/category", function (response2) {
+        $('#button_list').empty();
+        $.get(script_root + "/api/v1/category", function (response2) {
         cat = response2.data;
         for (var i = 0; i <= cat.length-1; i++) {
             /*challenges[i].solves = 0;*/
-            if ($.inArray(cat[i], categories) == -1) {
-                var category = cat[i];
+            let name = cat[i].name;
+            let description = cat[i].description;
+            let id = cat[i].id;
+            var categoryTab = "";
+            if(i == 0){
+                $("#button_list").append($(
+                    '<li class="nav-item">'+
+                    '<h3 data-toggle="tab" href="#{0}" class="nav-link active" id="{1}" onclick="button=this.id">'.format(name.replace(" ",'')+id.toString(),id)+
+                    arrow+
+                    ' {0}</a></li>'.format(name)));
+                categoryTab = '<div id="{0}" class="tab-pane fade active show">'.format(name.replace(" ",'')+id.toString());
+            }else{
+                $("#button_list").append($(
+                    '<li class="nav-item">'+
+                    '<h3 data-toggle="tab" href="#{0}" class="nav-link" id="{1}" onclick="button=this.id">'.format(name.replace(" ",'')+id.toString(),id)+
+                    '{0}</a></li>'.format(name)));
+                categoryTab = '<div id="{0}" class="tab-pane fade">'.format(name.replace(" ",'')+id.toString());
+            }
+            if ($.inArray(name, categories) == -1) {
+                var category = name;
                 categories.push(category);
 
                 var categoryid = category.replace(/ /g, "-").hashCode();
-                var categoryrow = $('' +
-                    '<div id="{0}-row" class="pt-5">'.format(categoryid) +
-                    '<div class="category-header col-md-12 mb-3">' +
+                var categoryrow = $(
+                    categoryTab +
+                    '<div id="{0}-row" class="pt-2">'.format(categoryid) +
+                    '<div class="category-header col-md-12 mb-4">' +
                     '</div>' +
                     '<div class="category-challenges col-md-12">' +
                     '<div class="challenges-row col-md-12"></div>' +
                     '</div>' +
-                    '</div>');
-                categoryrow.find(".category-header").append($("<h3>" + category + "</h3>"));
+                    '</div>' + '</div>');
+                categoryrow.find(".category-header").append($("<h3 class='mt-2'><u>Description</u></h3>" + "<p class='mt-3' style='font-size:1.15rem;color:#37d63e;'>" + description + "</p>"));
 
                 $('#challenges-board').append(categoryrow);
             }

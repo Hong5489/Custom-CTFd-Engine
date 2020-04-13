@@ -6,7 +6,7 @@
 {% block content %}
 <div class="jumbotron">
 	<div class="container">
-		<h1>Create Category</h1>
+		<h1>Edit Category</h1>
 	</div>
 </div>
 
@@ -15,11 +15,22 @@
 		<div class="col-md-12">
 			<div class="row">
 				<div class="col-md-6 offset-md-3">
-					<div id="create-category-entry">
+					<div id="edit-category-entry">
 						<form>
-							<label for="create-category" class="control-label">Name of Category</label>
-							<input type="text" class="form-control" name="name" placeholder="Enter category name">
-							<button class="mt-3 btn btn-primary float-right create-category-submit" type="submit">Create</button>
+							<label for="edit-category" class="control-label">Name of Category</label>
+							<input type="text" class="form-control" name="name" placeholder="Enter category name" value="{{ category.name}}">
+							
+							<div class="form-group mt-3">
+								<label for="message-text" class="control-label">Description
+									<small class="form-text text-muted">
+										Use this to give a brief introduction to your category. The description supports HTML and
+										Markdown.
+									</small>
+								</label>
+								<textarea id="new-desc-editor" class="form-control" name="description" rows="10" >{{ category.description }}</textarea>
+							</div>
+							<input type="hidden" name="id" value="{{ category.id }}">
+							<button class="mt-3 btn btn-primary float-right edit-category-submit" type="submit">Edit</button>
 						</form>
 					</div>
 				</div>
@@ -35,10 +46,10 @@
 	<script src="{{ url_for('views.themes', theme='admin', path='js/vendor/codemirror.min.js') }}"></script>
 	<script>
 	var nonce = "{{ nonce }}";
-	$("#create-category-entry form").submit(function (e) {
+	$("#edit-category-entry form").submit(function (e) {
         e.preventDefault();
-        var params = $("#create-category-entry form").serializeJSON();
-        CTFd.fetch('/api/v1/category/new', {
+        var params = $("#edit-category-entry form").serializeJSON();
+        CTFd.fetch('/api/v1/category/edit', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {

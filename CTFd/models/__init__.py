@@ -787,6 +787,7 @@ class Category(db.Model):
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
+    description = db.Column(db.Text)
     challenges = db.relationship("Challenges", backref="categories")
     
     def __init__(self, *args, **kwargs):

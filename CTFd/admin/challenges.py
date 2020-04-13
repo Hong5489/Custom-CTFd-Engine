@@ -15,13 +15,6 @@ def challenges_listing():
     challenges = Challenges.query.all()
     return render_template('admin/challenges/challenges.html', challenges=challenges,category=showCategory())
 
-@admin.route('/admin/category')
-@admins_only
-def category_listing():
-    from fyp import showCategory
-    return render_template('admin/category/category.html', category=enumerate(showCategory()))
-
-
 @admin.route('/admin/challenges/<int:challenge_id>')
 @admins_only
 def challenges_detail(challenge_id):
@@ -58,8 +51,3 @@ def challenges_detail(challenge_id):
 @admins_only
 def challenges_new():
     return render_template('admin/challenges/new.html')
-
-@admin.route('/admin/category/new')
-@admins_only
-def category_new():
-    return render_template('admin/category/new.html')
