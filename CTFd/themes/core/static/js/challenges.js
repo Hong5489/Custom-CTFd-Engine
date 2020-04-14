@@ -278,7 +278,7 @@ function loadchals(cb) {
                     '<div class="challenges-row col-md-12"></div>' +
                     '</div>' +
                     '</div>' + '</div>');
-                categoryrow.find(".category-header").append($("<h3 class='mt-2'><u>Description</u></h3>" + "<p class='mt-3' style='font-size:1.15rem;color:#37d63e;'>" + description + "</p>"));
+                categoryrow.find(".category-header").append($("<p class='mt-3' style='font-size:1.15rem;color:#37d63e;'>" + description + "</p>"));
 
                 $('#challenges-board').append(categoryrow);
             }
