@@ -58,6 +58,8 @@ class CTFdStandardChallenge(BaseChallenge):
         :param challenge:
         :return: Challenge object, data dictionary to be returned to the user
         """
+        from fyp import generateDifficulty
+        difficulty = generateDifficulty(challenge.difficulty)
         data = {
             'id': challenge.id,
             'name': challenge.name,
@@ -67,6 +69,7 @@ class CTFdStandardChallenge(BaseChallenge):
             'state': challenge.state,
             'max_attempts': challenge.max_attempts,
             'type': challenge.type,
+            'difficulty': difficulty,
             'type_data': {
                 'id': CTFdStandardChallenge.id,
                 'name': CTFdStandardChallenge.name,

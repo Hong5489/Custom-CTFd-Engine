@@ -34,11 +34,13 @@ class ShowCategory(Resource):
         else:
             request_data = request.get_json()
         data = request_data.get("data")
-        Category.query.delete()
-        db.session.commit()
+        # Category.query.delete()
+        # db.session.commit()
         import re
-        for i in re.findall("<span>(.*)</span>",data):
-            db.session.add(Category(name=i))
+        for i,r in enumerate(re.findall("([0-9]+)</td><td><span>(.*)</span>",data)):
+            id, name = int(r[0]),r[1]
+            c = Category.query.filter_by(id=id).first_or_404()
+            c.id = i+1
         db.session.commit()
         return "Success"
 

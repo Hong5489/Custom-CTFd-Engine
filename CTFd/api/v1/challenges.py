@@ -59,7 +59,7 @@ class ChallengeList(Resource):
 
         challenges = Challenges.query.filter(
             and_(Challenges.state != 'hidden', Challenges.state != 'locked')
-        ).order_by(Challenges.value).all()
+        ).order_by(Challenges.difficulty).all()
 
         if user:
             solve_ids = Solves.query\
@@ -358,45 +358,6 @@ class ChallengeManagePorts(Resource):
                 'number': port.number
             }
         }
-
-@challenges_namespace.route('/category')
-class ChallengeCategory(Resource):
-    @during_ctf_time_only
-    @require_verified_emails
-    def get(self):
-        from fyp import showCategory
-        return {
-            'data': showCategory()
-        }
-
-
-    @admins_only
-    def post(self):
-        if request.content_type != 'application/json':
-            request_data = request.form
-        else:
-            request_data = request.get_json()
-        data = request_data.get("data")
-        Category.query.delete()
-        db.session.commit()
-        import re
-        for i in re.findall("<span>(.*)</span>",data):
-            db.session.add(Category(name=i))
-        db.session.commit()
-        return "Success"
-
-@challenges_namespace.route('/category/new')
-class ChallengeNewCategory(Resource):
-    @admins_only
-    def post(self):
-        if request.content_type != 'application/json':
-            request_data = request.form
-        else:
-            request_data = request.get_json()
-        name = request_data.get("name")
-        db.session.add(Category(name=name))
-        db.session.commit()
-        return "Success"
 
 @challenges_namespace.route('/attempt')
 class ChallengeAttempt(Resource):

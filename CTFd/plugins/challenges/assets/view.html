@@ -28,6 +28,7 @@
 							{% endfor %}
 						</div>
 						<span class="challenge-desc">{{ description | safe }}</span>
+						<p>Difficulty: {{ difficulty | safe }}</p>
 						<div class="challenge-hints hint-row row">
 							{% for hint in hints %}
 								<div class='col-md-12 hint-button-wrapper text-center mb-3'>

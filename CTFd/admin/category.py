@@ -7,7 +7,7 @@ from CTFd.admin import admin
 @admins_only
 def category_listing():
     from fyp import showCategoryDesc
-    return render_template('admin/category/category.html', category=enumerate(showCategoryDesc()))
+    return render_template('admin/category/category.html', category=showCategoryDesc())
 
 @admin.route('/admin/category/new')
 @admins_only

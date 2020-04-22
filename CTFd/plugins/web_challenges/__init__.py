@@ -55,6 +55,8 @@ class WebsiteChallenge(BaseChallenge):
         :return: Challenge object, data dictionary to be returned to the user
         """
         challenge = WebChallenge.query.filter_by(id=challenge.id).first()
+        from fyp import generateDifficulty
+        difficulty = generateDifficulty(challenge.difficulty)
         data = {
             'id': challenge.id,
             'name': challenge.name,
@@ -67,6 +69,7 @@ class WebsiteChallenge(BaseChallenge):
             'state': challenge.state,
             'max_attempts': challenge.max_attempts,
             'type': challenge.type,
+            'difficulty': difficulty,
             'type_data': {
                 'id': WebsiteChallenge.id,
                 'name': WebsiteChallenge.name,

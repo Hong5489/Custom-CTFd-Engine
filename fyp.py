@@ -108,3 +108,13 @@ def currentCategory():
 		if c not in response:
 			response.append(c)
 	return response
+
+def generateDifficulty(difficulty):
+	if difficulty == 1:
+		return "<span style='color:#37d63e;'>Easy</span>"
+	elif difficulty == 2:
+		return "<span style='color:orange;'>Medium</span>"
+	elif difficulty == 3:
+		return "<span style='color:red;'>Hard</span>"
+	elif difficulty == 4:
+		return "<b><span style='color:#d60000;'>EXTREME</span></b>"

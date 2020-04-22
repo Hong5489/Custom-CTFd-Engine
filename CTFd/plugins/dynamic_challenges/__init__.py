@@ -55,6 +55,8 @@ class DynamicValueChallenge(BaseChallenge):
         :return: Challenge object, data dictionary to be returned to the user
         """
         challenge = DynamicChallenge.query.filter_by(id=challenge.id).first()
+        from fyp import generateDifficulty
+        difficulty = generateDifficulty(challenge.difficulty)
         data = {
             'id': challenge.id,
             'name': challenge.name,
@@ -67,6 +69,7 @@ class DynamicValueChallenge(BaseChallenge):
             'state': challenge.state,
             'max_attempts': challenge.max_attempts,
             'type': challenge.type,
+            'difficulty': difficulty,
             'type_data': {
                 'id': DynamicValueChallenge.id,
                 'name': DynamicValueChallenge.name,
