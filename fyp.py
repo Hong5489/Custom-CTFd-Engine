@@ -1,3 +1,4 @@
+# -*- coding: latin-1 -*-
 def generateFlag(flag,team):
 	import hashlib
 	import time
@@ -110,6 +111,8 @@ def currentCategory():
 	return response
 
 def generateDifficulty(difficulty):
+	if difficulty == 0:
+		return "<span style='font-size:20px;'>🍰</span>"
 	if difficulty == 1:
 		return "<span style='color:#37d63e;'>Easy</span>"
 	elif difficulty == 2:
