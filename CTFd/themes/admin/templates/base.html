@@ -71,6 +71,7 @@
 						   aria-haspopup="true" aria-expanded="true">Submissions</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="{{ url_for('admin.submissions_listing') }}">All Submissions</a>
+							<a class="dropdown-item" href="{{ url_for('admin.submissions_listing', submission_type='share flag') }}">Share Flag Submissions</a>
 							<a class="dropdown-item" href="{{ url_for('admin.submissions_listing', submission_type='correct') }}">Correct Submissions</a>
 							<a class="dropdown-item" href="{{ url_for('admin.submissions_listing', submission_type='incorrect') }}">Wrong Submissions</a>
 						</div>

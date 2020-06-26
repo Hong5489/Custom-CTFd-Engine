@@ -509,7 +509,8 @@ class ChallengeAttempt(Resource):
                         user=user,
                         team=team,
                         challenge=challenge,
-                        request=request
+                        request=request,
+                        share=message=="Share Flag Detected"
                     )
                     clear_standings()
 
@@ -548,6 +549,15 @@ class ChallengeAttempt(Resource):
 
         # Challenge already solved
         else:
+            status, message = chal_class.attempt(challenge, request)
+
+            return {
+                'success': True,
+                'data': {
+                    'status': "already_solved",
+                    'message': "You already solved this "+("and the flag is correct" if status else "but the flag is wrong")
+                }
+            }
             log(
                 'submissions',
                 "[{date}] {name} submitted {submission} with kpm {kpm} [ALREADY SOLVED]",
@@ -556,13 +566,13 @@ class ChallengeAttempt(Resource):
                     user.account_id
                 )
             )
-            return {
-                'success': True,
-                'data': {
-                    'status': "already_solved",
-                    'message': 'You already solved this'
-                }
-            }
+            # return {
+            #     'success': True,
+            #     'data': {
+            #         'status': "already_solved",
+            #         'message': 'You already solved this'
+            #     }
+            # }
 
 
 @challenges_namespace.route('/<challenge_id>/solves')

@@ -1,6 +1,6 @@
 from CTFd.plugins import register_plugin_assets_directory
 from CTFd.plugins.flags import get_flag_class
-from CTFd.models import db, Solves, Fails, Flags, Challenges, ChallengeFiles, Tags, Hints
+from CTFd.models import db, Solves, Fails, Flags, Challenges, ChallengeFiles, Tags, Hints, ShareFlags
 from CTFd import utils
 from CTFd.utils.user import get_ip
 from CTFd.utils.uploads import upload_file, delete_file
@@ -131,8 +131,11 @@ class CTFdStandardChallenge(BaseChallenge):
         submission = data['submission'].strip()
         flags = Flags.query.filter_by(challenge_id=challenge.id).all()
         for flag in flags:
-            if get_flag_class(flag.type).compare(flag, submission):
+            correct, share = get_flag_class(flag.type).compare(flag, submission)
+            if correct:
                 return True, 'Correct'
+            elif share:
+                return False, 'Share Flag Detected' 
         return False, 'Incorrect'
 
     @staticmethod
@@ -159,7 +162,7 @@ class CTFdStandardChallenge(BaseChallenge):
         db.session.close()
 
     @staticmethod
-    def fail(user, team, challenge, request):
+    def fail(user, team, challenge, request, share):
         """
         This method is used to insert Fails into the database in order to mark an answer incorrect.
 
@@ -170,13 +173,22 @@ class CTFdStandardChallenge(BaseChallenge):
         """
         data = request.form or request.get_json()
         submission = data['submission'].strip()
-        wrong = Fails(
-            user_id=user.id,
-            team_id=team.id if team else None,
-            challenge_id=challenge.id,
-            ip=get_ip(request),
-            provided=submission
-        )
+        if share:
+            wrong = ShareFlags(
+                user_id=user.id,
+                team_id=team.id if team else None,
+                challenge_id=challenge.id,
+                ip=get_ip(request),
+                provided=submission
+            )
+        else:
+            wrong = Fails(
+                user_id=user.id,
+                team_id=team.id if team else None,
+                challenge_id=challenge.id,
+                ip=get_ip(request),
+                provided=submission
+            )
         db.session.add(wrong)
         db.session.commit()
         db.session.close()

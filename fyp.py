@@ -29,8 +29,8 @@ def updateBinaryChallenge():
         	generateBinaryFlag(team)
 	return "Success!"
 
-def createBinaryChallenge():
-	from os import system
+# def createBinaryChallenge():
+# 	from os import system
 
 
 def createPort(challenge,flag,team,port):
@@ -53,36 +53,6 @@ def showCategory():
 				c.category_id = i
 	db.session.commit()
 	return categories_name
-	# response = []
-	# for c in categories:
-	#  	response.append(c)
-	# if len(categories) == 0:
-	# 	total_category = [i[0] for i in db.session.query(Challenges.category)]
-	# 	for c in total_category:
-	# 		if c not in response:
-	# 			response.append(c)
-	# 			db.session.add(Category(name=c))
-	# 	db.session.commit()
-	# else:
-	# 	current_category = currentCategory()
-	# 	categories = [i.name for i in categories]
-	# 	if len(current_category) == len(categories):
-	# 		for c in categories:
-	# 			response.append(c)
-	# 	else:
-	# 		response = categories[:]
-	# 		if len(current_category) > len(categories):
-	# 			for c in current_category:
-	# 				if c not in categories:
-	# 					response.append(c)
-	# 					db.session.add(Category(name=c))
-	# 		else:
-	# 			for c in categories:
-	# 				if c not in current_category:
-	# 					response.remove(c)
-	# 					db.session.delete(Category.query.filter_by(name=c).one())
-	# 		db.session.commit()
-	#return response
 
 def showCategoryDesc():
 	from CTFd.models import Category
@@ -109,6 +79,13 @@ def currentCategory():
 		if c not in response:
 			response.append(c)
 	return response
+
+def checkShareFlag(correct_flag,wrong_flag):
+	wrong_flag = wrong_flag[:-8] + "}"
+	correct_flag = correct_flag[:-8] + "}"
+	if wrong_flag == correct_flag:
+		return True
+	return False
 
 def generateDifficulty(difficulty):
 	if difficulty == 0:

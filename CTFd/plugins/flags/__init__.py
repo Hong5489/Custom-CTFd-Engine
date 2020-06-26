@@ -27,7 +27,7 @@ class CTFdStaticFlag(BaseFlag):
         data = chal_key_obj.data
 
         if len(saved) != len(provided):
-            return False
+            return False,False
         result = 0
 
         if data == "case_insensitive":
@@ -36,7 +36,7 @@ class CTFdStaticFlag(BaseFlag):
         else:
             for x, y in zip(saved, provided):
                 result |= ord(x) ^ ord(y)
-        return result == 0
+        return result == 0, False
 
 
 class CTFdRegexFlag(BaseFlag):
@@ -56,11 +56,11 @@ class CTFdRegexFlag(BaseFlag):
         else:
             res = re.match(saved, provided)
 
-        return res and res.group() == provided
+        return res and res.group() == provided, False
 
 class DynamicFlag(BaseFlag):
     name = "dynamic"
-    templates = {  # Nunjucks templates used for key editing & viewing
+    templates = {
         'create': '/plugins/flags/assets/dynamic/create.html',
         'update': '/plugins/flags/assets/dynamic/edit.html',
     }
@@ -70,20 +70,24 @@ class DynamicFlag(BaseFlag):
         saved = chal_key_obj.content
         data = chal_key_obj.data
 
-        from fyp import generateFlag
+        from fyp import generateFlag,checkShareFlag
         from CTFd.utils.user import get_current_team
         saved = generateFlag(saved,get_current_team())
         if len(saved) != len(provided):
-            return False
+            return False,False
         result = 0
-
+        share = False
         if data == "case_insensitive":
-            for x, y in zip(saved.lower(), provided.lower()):
-                result |= ord(x) ^ ord(y)
-        else:
-            for x, y in zip(saved, provided):
-                result |= ord(x) ^ ord(y)
-        return result == 0
+            saved = saved.lower()
+            provided = provided.lower()
+
+        for x, y in zip(saved, provided):
+            result |= ord(x) ^ ord(y)
+
+        if result != 0:
+            share = checkShareFlag(saved,provided)
+
+        return result == 0,share
 
 
 FLAG_CLASSES = {

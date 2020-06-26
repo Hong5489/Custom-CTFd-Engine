@@ -712,6 +712,10 @@ class Fails(Submissions):
         'polymorphic_identity': 'incorrect'
     }
 
+class ShareFlags(Submissions):
+    __mapper_args__ = {
+        'polymorphic_identity': 'share flag'
+    }
 
 class Unlocks(db.Model):
     __tablename__ = 'unlocks'
