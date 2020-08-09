@@ -150,6 +150,7 @@
 	<script src="{{ url_for('views.themes', theme='admin', path='js/ezq.js') }}"></script>
 	<script src="{{ url_for('views.themes', theme='admin', path='js/style.js') }}"></script>
 	<script src="{{ url_for('views.themes', theme='admin', path='js/jquery.sortable.js') }}"></script>
+	<script src="{{ url_for('views.themes', path='js/events.js') }}"></script>
 	{% block scripts %} {% endblock %}
 
 	{% for script in get_registered_admin_scripts() %}
