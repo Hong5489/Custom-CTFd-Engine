@@ -87,6 +87,9 @@ class DynamicFlag(BaseFlag):
         if result != 0:
             share = checkShareFlag(saved,provided)
 
+        if share:
+            from CTFd.utils.events import socketio
+            socketio.emit('notification', get_current_team().name, broadcast=True)
         return result == 0,share
 
 
