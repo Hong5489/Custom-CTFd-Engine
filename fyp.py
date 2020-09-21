@@ -89,7 +89,7 @@ def checkShareFlag(correct_flag,wrong_flag):
 
 def generateDifficulty(difficulty):
 	if difficulty == 0:
-		return "<span style='font-size:20px;'>🍰</span>"
+		return "<span style='color:#37d63e;'>Beginner</span>"
 	if difficulty == 1:
 		return "<span style='color:#37d63e;'>Easy</span>"
 	elif difficulty == 2:

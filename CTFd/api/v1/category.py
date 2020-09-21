@@ -75,3 +75,17 @@ class EditCategory(Resource):
         c.description = desc
         db.session.commit()
         return "Success"
+
+@category_namespace.route('/delete')
+class DeleteCategory(Resource):
+    @admins_only
+    def post(self):
+        if request.content_type != 'application/json':
+            request_data = request.form
+        else:
+            request_data = request.get_json()
+        id = int(request_data.get("id"))
+        c = Category.query.filter_by(id=id).first_or_404()
+        db.session.delete(c)
+        db.session.commit()
+        return "Success"

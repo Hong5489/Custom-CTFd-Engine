@@ -339,7 +339,14 @@ class ChallengeManagePorts(Resource):
         target_port = 4000
         while target_port in ports_id:
             target_port += 1
-
+        if target_port > 4005:
+            return {
+                'success': True,
+                'data': {
+                    'status': "incorrect",
+                    'message': "Insufficient ports to open, wait or close opened port"
+                }
+            }
         port = Ports(
             number = target_port
         )
