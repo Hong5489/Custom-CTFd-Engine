@@ -80,6 +80,22 @@ services:
       - "../server-skr/motd:/etc/motd"
     command: bash -c "cp /ctfuser/passwd /etc/passwd;cp /ctfuser/group /etc/group;cp /ctfuser/shadow /etc/shadow;/usr/sbin/sshd -D"
 
+  netcat-container:
+    container_name: "netcat-container"
+    build: ../netcat-container
+    ports:
+      - "3017:2000"
+      - "3018:2001"
+      - "3003:2002"
+      - "3005:2003"
+      - "3019:2004"
+      - "3008:2005"
+      - "3010:2006"
+      - "3016:2007"
+      - "3013:2008"
+      - "3012:2009"
+      - "3020:2010"
+
 networks:
     default:
     internal:
