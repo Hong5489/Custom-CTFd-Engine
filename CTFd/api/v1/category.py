@@ -1,5 +1,5 @@
 from flask import session, request, abort, url_for
-from flask_restplus import Namespace, Resource
+from flask_restx import Namespace, Resource
 from CTFd.models import (
     db,
     Category,
@@ -38,9 +38,9 @@ class ShowCategory(Resource):
         # db.session.commit()
         import re
         for i,r in enumerate(re.findall("([0-9]+)</td><td><span>(.*)</span>",data)):
-            id, name = int(r[0]),r[1]
-            c = Category.query.filter_by(id=id).first_or_404()
-            c.id = i+1
+            number, name = int(r[0]),r[1]
+            c = Category.query.filter_by(number=number).first_or_404()
+            c.number = i+1
         db.session.commit()
         return "Success"
 

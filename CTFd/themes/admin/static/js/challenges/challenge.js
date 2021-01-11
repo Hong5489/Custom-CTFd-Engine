@@ -156,6 +156,34 @@ $(document).ready(function () {
         });
     });
 
+    $('.discord-announce').click(function(e){
+        ezq({
+            title: "Announce Challenge",
+            body: "Are you sure you want to annouce {0} to Discord".format("<strong>" + htmlentities(CHALLENGE_NAME) + "</strong>"),
+            success: function () {
+                CTFd.fetch('/api/v1/challenges/' + CHALLENGE_ID + '/announce', {
+                    method: 'POST',
+                }).then(function (response) {
+                    return response.json();
+                }).then(function (response) {
+                    if (response.success) {
+                       	ezal({
+	                	title: "Announce Challenge",
+	                	body: "Successfully announced to your Discord channel",
+		                button: "Got it!"
+		        });
+                    }else{
+	            	ezal({
+                                title: "Announce Challenge",
+                                body: "Failed to announce to your Discord channel",
+                                button: "Got it!"
+                        });
+                    }
+                });
+            }
+        });
+    });
+
     $('#challenge-update-container > form').submit(function(e){
         e.preventDefault();
         var params = $(e.target).serializeJSON(true);

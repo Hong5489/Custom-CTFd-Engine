@@ -1,5 +1,5 @@
 from flask import session, request
-from flask_restplus import Namespace, Resource
+from flask_restx import Namespace, Resource
 from CTFd.models import db, get_class_by_tablename, Unlocks, Awards
 from CTFd.utils.user import get_current_user
 from CTFd.schemas.unlocks import UnlockSchema

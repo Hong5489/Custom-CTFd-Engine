@@ -130,6 +130,26 @@ function update_binary(){
     });
 }
 
+function update_token(){
+    CTFd.fetch('/api/v1/configs/updateToken',{
+        method:'POST',
+	body: JSON.stringify({"token": document.getElementById("token").value,"channel": document.getElementById("channel").value})
+    }).then(function(response) {
+        return response.json()
+    }).then(function (response) {
+        if (response.success) {
+            window.location.reload()
+        } else {
+            ezal({
+                title: "Error!",
+                body: "Update failed!",
+                button: "Okay"
+            });
+        }
+    });
+
+}
+
 function create_binary(){
     var params = {
         'file_name':document.getElementById("file_name").value,

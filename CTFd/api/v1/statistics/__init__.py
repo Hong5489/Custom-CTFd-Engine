@@ -1,4 +1,4 @@
-from flask_restplus import Namespace, Resource
+from flask_restx import Namespace, Resource
 from CTFd.models import db, Challenges, Unlocks, Hints
 from CTFd.plugins.challenges import get_chal_class
 from CTFd.utils.dates import ctf_ended

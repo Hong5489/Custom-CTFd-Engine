@@ -4,7 +4,7 @@ import os
 from distutils.version import StrictVersion
 from flask import Flask, Request
 from werkzeug.utils import cached_property
-from werkzeug.contrib.fixers import ProxyFix
+from werkzeug.middleware.proxy_fix import ProxyFix
 from jinja2 import FileSystemLoader
 from jinja2.sandbox import SandboxedEnvironment
 from six.moves import input

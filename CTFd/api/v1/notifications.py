@@ -1,5 +1,5 @@
 from flask import session, request
-from flask_restplus import Namespace, Resource
+from flask_restx import Namespace, Resource
 from CTFd.models import db, Notifications
 from CTFd.schemas.notifications import NotificationSchema
 from CTFd.utils.events import socketio

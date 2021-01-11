@@ -8,6 +8,7 @@ from CTFd.models import ma, Unlocks
 class UnlockSchema(ma.ModelSchema):
     class Meta:
         model = Unlocks
+        load_instance = True
         include_fk = True
         dump_only = ('id', 'date')
 

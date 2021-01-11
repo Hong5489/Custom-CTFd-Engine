@@ -1,10 +1,11 @@
-#!/bin/sh
-set -eo pipefail
+#!/bin/bash
+set -euo pipefail
 
 WORKERS=${WORKERS:-1}
 WORKER_CLASS=${WORKER_CLASS:-geventwebsocket.gunicorn.workers.GeventWebSocketWorker}
 ACCESS_LOG=${ACCESS_LOG:--}
 ERROR_LOG=${ERROR_LOG:--}
+SECRET_KEY=${SECRET_KEY:-}
 
 # Check that a .ctfd_secret_key file or SECRET_KEY envvar is set
 if [ ! -f .ctfd_secret_key ] && [ -z "$SECRET_KEY" ]; then

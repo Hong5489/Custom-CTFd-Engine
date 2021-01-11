@@ -1,5 +1,5 @@
 from flask import Flask, current_app as app, request, session, redirect, url_for, abort, render_template
-from werkzeug.wsgi import DispatcherMiddleware
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from CTFd.models import db, Tracking
 
 from CTFd.utils import markdown, get_config

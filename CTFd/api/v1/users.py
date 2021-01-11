@@ -1,5 +1,5 @@
 from flask import session, request, abort
-from flask_restplus import Namespace, Resource
+from flask_restx import Namespace, Resource
 from CTFd.models import db, Users, Solves, Awards, Fails, Tracking, Unlocks, Submissions, Notifications
 from CTFd.utils.decorators import (
     authed_only,

@@ -16,6 +16,7 @@ from CTFd.utils.email import check_email_is_whitelisted
 class UserSchema(ma.ModelSchema):
     class Meta:
         model = Users
+        load_instance = True
         include_fk = True
         dump_only = ('id', 'oauth_id', 'created')
         load_only = ('password',)
@@ -32,7 +33,7 @@ class UserSchema(ma.ModelSchema):
         Users,
         'email',
         validate=[
-            validate.Email('Emails must be a properly formatted email address'),
+            validate.Email(error='Emails must be a properly formatted email address'),
             validate.Length(min=1, max=128, error='Emails must not be empty'),
         ]
     )

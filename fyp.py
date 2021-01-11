@@ -1,20 +1,21 @@
-# -*- coding: latin-1 -*-
 def generateFlag(flag,team):
 	import hashlib
 	import time
 	index = flag.find('{')
 	flag_format = flag[:index]
 	flag = flag[index+1:-1]
-	hashflag = hashlib.md5(team.name+flag+team.secret+str(time.mktime(team.created.timetuple()))).hexdigest()[:6]
+	m = (team.name+flag+team.secret+str(time.mktime(team.created.timetuple()))).encode()
+	hashflag = hashlib.md5(m).hexdigest()[:6]
 	return "%s{%s_%s}" % (flag_format,flag,hashflag)
 
 def generateBinaryFlag(team):
 	import subprocess
+	import base64
 	challenges = subprocess.check_output(["docker","exec","server-skr","ls","/ctf/challenges/"], stderr=subprocess.STDOUT)[:-1].split('\n')
 	for c in challenges:
 		flag = subprocess.check_output(["docker","exec","server-skr","cat","/ctf/challenges/%s/flag.txt"%c], stderr=subprocess.STDOUT)[:-1]
 		from os import system
-		system("""docker exec server-skr bash -c 'echo "%s" | base64 -d > /home/%s/challenges/%s/flag.txt'""" % (generateFlag(flag,team).encode("base64"),team.name,c))
+		system("""docker exec server-skr bash -c 'echo "%s" | base64 -d > /home/%s/challenges/%s/flag.txt'""" % (base64.b64encode(generateFlag(flag,team)).decode(),team.name,c))
 
 def updateBinaryChallenge():
 	import subprocess
@@ -25,8 +26,8 @@ def updateBinaryChallenge():
 		team_name = e.split(":x:")[0]
 		team = Teams.query.filter_by(name=team_name).first_or_404()
 		system("docker exec server-skr cp -rp /ctf/. /home/%s/" % team_name)
-        	system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (team_name,team_name))
-        	generateBinaryFlag(team)
+		system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (team_name,team_name))
+		generateBinaryFlag(team)
 	return "Success!"
 
 # def createBinaryChallenge():
@@ -57,12 +58,13 @@ def showCategory():
 def showCategoryDesc():
 	from CTFd.models import Category
 	response = []
-	category = Category.query.all()
+	category = Category.query.order_by(Category.number).all()
 	for c in category:
 		response.append({
 		    "id": c.id,
 		    "name": c.name,
-		    "description": c.description
+		    "description": c.description,
+		    "number": c.number
 		})
 	return response
 
@@ -98,3 +100,8 @@ def generateDifficulty(difficulty):
 		return "<span style='color:red;'>Hard</span>"
 	elif difficulty == 4:
 		return "<b><span style='color:#d60000;'>EXTREME</span></b>"
+
+def announceDiscord(text):
+	from CTFd.utils import get_config
+	import os, base64
+	os.system(f"python3 bot.py {get_config('token')} {get_config('channel')} {base64.b64encode(text.encode()).decode()}")

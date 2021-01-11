@@ -8,6 +8,7 @@ from CTFd.models import ma, Notifications
 class NotificationSchema(ma.ModelSchema):
     class Meta:
         model = Notifications
+        load_instance = True
         include_fk = True
         dump_only = ('id', 'date')
 

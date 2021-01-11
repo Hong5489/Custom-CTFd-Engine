@@ -1,5 +1,5 @@
 from flask import session, request
-from flask_restplus import Namespace, Resource
+from flask_restx import Namespace, Resource
 from CTFd.models import db, Flags
 from CTFd.schemas.flags import FlagSchema
 from CTFd.plugins.flags import get_flag_class, FLAG_CLASSES

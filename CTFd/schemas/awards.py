@@ -8,6 +8,7 @@ from CTFd.models import ma, Awards
 class AwardSchema(ma.ModelSchema):
     class Meta:
         model = Awards
+        load_instance = True
         include_fk = True
         dump_only = ('id', 'date')
 

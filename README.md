@@ -1,9 +1,15 @@
 # Custom CTFd engine
+Custom made CTFd engine by SKR, live at [skrctf.me](skrctf.me). Upgraded to Python3!
+
 ## Features
 - Flag Sharing Prevention
 - Dynamic Flag for Web Challenges and Binary Challenges
 - Web Shell login using Team Credentials
 - Reverse Proxy for Web Challenges
+- Arrange category priority
+- Arrange challenges by difficulty
+- Discord bot announce challenges
+- Netcat container for multiple challenges
 
 First run this:
 ```
@@ -166,5 +172,16 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.card{
+  background-color:transparent;
+  border:4px solid #fff;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+  background-color:transparent;
+  border: 2px solid #37d63e;
+  border-radius: 0;
 }
 ```

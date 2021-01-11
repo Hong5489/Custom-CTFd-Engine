@@ -1,4 +1,4 @@
-from flask_restplus import Namespace, Resource
+from flask_restx import Namespace, Resource
 from CTFd.models import db, Submissions
 from CTFd.utils.decorators import (
     admins_only,

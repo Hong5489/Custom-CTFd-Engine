@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Namespace, Resource
+from flask_restx import Namespace, Resource
 from CTFd.models import db, Configs
 from CTFd.schemas.config import ConfigSchema
 from CTFd.utils.decorators import (
@@ -75,13 +75,13 @@ class UpdateBinary(Resource):
     def get(self):
         from fyp import updateBinaryChallenge
         try:
-		return {
-            		'data': updateBinaryChallenge()
-        	}
-	except Exception as e:
-		return {
+                return {
+                       'data': updateBinaryChallenge()
+                }
+        except Exception as e:
+                return {
 			'data': str(e)
-		}
+                }
 
 @configs_namespace.route('/createBinary')
 class CreateBinary(Resource):
@@ -91,6 +91,17 @@ class CreateBinary(Resource):
         return {
             'data': str(request.get_json())
         }
+
+@configs_namespace.route('/updateToken')
+class UpdateToken(Resource):
+	@admins_only
+	def post(self):
+		req = request.get_json()
+		set_config("token",req['token'])
+		set_config("channel",req["channel"])
+		return {
+		    "success":True
+		}
 
 
 @configs_namespace.route('/<config_key>')

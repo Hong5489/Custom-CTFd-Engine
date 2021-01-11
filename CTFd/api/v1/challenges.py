@@ -1,5 +1,5 @@
 from flask import session, request, abort, url_for
-from flask_restplus import Namespace, Resource
+from flask_restx import Namespace, Resource
 from CTFd.models import (
     db,
     Challenges,
@@ -709,3 +709,16 @@ class ChallengeFlags(Resource):
             'success': True,
             'data': response.data
         }
+
+@challenges_namespace.route('/<challenge_id>/announce')
+@challenges_namespace.param('id', 'A Challenge ID')
+class ChallengeAnnounce(Resource):
+	@admins_only
+	def post(self, challenge_id):
+		chal = Challenges.query.filter(Challenges.id == challenge_id).first_or_404()
+		from fyp import announceDiscord
+		announceDiscord(f"A new challenge has created!\n**{chal.name}** in **{chal.category}** category")
+		return {
+    			'success': True
+		}
+

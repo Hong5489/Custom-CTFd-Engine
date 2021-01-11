@@ -1,5 +1,5 @@
 from flask import session, request, abort
-from flask_restplus import Namespace, Resource
+from flask_restx import Namespace, Resource
 from CTFd.models import db, Teams, Solves, Awards, Fails
 from CTFd.schemas.teams import TeamSchema
 from CTFd.schemas.submissions import SubmissionSchema

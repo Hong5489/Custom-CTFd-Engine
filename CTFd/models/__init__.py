@@ -478,7 +478,7 @@ class Teams(db.Model):
     email = db.Column(db.String(128), unique=True)
     password = db.Column(db.String(128))
     from os import urandom
-    secret = db.Column(db.String(128),default=urandom(16).encode('hex'))
+    secret = db.Column(db.String(128),default=urandom(16).hex())
 
     members = db.relationship("Users", backref="team")
     ports = db.relationship("Ports", backref="team")
@@ -793,6 +793,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     description = db.Column(db.Text)
+    number = db.Column(db.Integer)
     challenges = db.relationship("Challenges", backref="categories")
     
     def __init__(self, *args, **kwargs):

@@ -55,9 +55,10 @@
                 <tbody id="body">
                 {% for c in category %}
                 <tr>
-                    <td>{{ c.id }}</td><td><span>{{ c.name }}</span></td>
+                    <td>{{ c.number }}</td><td><span>{{ c.name }}</span></td>
                     <td>{{ c.description }}</td>
                     <td><a class="fas fa-edit" href="{{ url_for('admin.category_edit',category_id=c.id) }}"></a></td>
+                    <td><a class="fas fa-trash" onclick="remove({{c.id}},'{{c.name}}')"></a></td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -101,6 +102,24 @@
 	        location.reload(true);
 	    });
 		
+	}
+	function remove(id,name){
+		ezq({
+	            title: "Delete Category",
+	            body: "Are you sure you want to delete {0}".format("<strong>" + htmlentities(name) + "</strong>"),
+	            success: function () {
+	                CTFd.fetch('/api/v1/category/delete', {
+	                    method: 'POST',
+			    body: JSON.stringify({"id": id})
+	                }).then(function (response) {
+	                    return response.json();
+	                }).then(function (response) {
+	                    if (response == "Success") {
+	                        window.location = script_root + '/admin/category';
+	                    }
+	                });
+	            }
+	        });
 	}
 </script>
 {% endblock %}

@@ -14,6 +14,7 @@ from CTFd.utils.crypto import verify_password, hash_password
 class TeamSchema(ma.ModelSchema):
     class Meta:
         model = Teams
+        load_instance = True
         include_fk = True
         dump_only = ('id', 'oauth_id', 'created', 'members')
         load_only = ('password',)
@@ -29,7 +30,7 @@ class TeamSchema(ma.ModelSchema):
     email = field_for(
         Teams,
         'email',
-        validate=validate.Email('Emails must be a properly formatted email address')
+        validate=validate.Email(error='Emails must be a properly formatted email address')
     )
     website = field_for(
         Teams,

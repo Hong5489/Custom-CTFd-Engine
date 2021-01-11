@@ -1,5 +1,5 @@
 from flask import session, jsonify, request, abort
-from flask_restplus import Namespace, Resource, reqparse
+from flask_restx import Namespace, Resource, reqparse
 
 from CTFd.cache import cache, clear_standings
 from CTFd.utils.scores import get_standings

@@ -35,6 +35,7 @@ services:
       - LOG_FOLDER=/var/log/CTFd
       - ACCESS_LOG=-
       - ERROR_LOG=-
+      - UPDATE_CHECK=true
     volumes:
       - .data/CTFd/logs:/var/log/CTFd
       - .data/CTFd/uploads:/var/uploads
@@ -70,19 +71,31 @@ services:
 
   server-skr:
     container_name: "server-skr"
-    build: ../server-skr
-    ports:
-      - "3004:22"
+    build: ./server-skr
+    expose:
+      - "22"
     hostname: "server-skr"
     volumes:
-      - "../server-skr/home:/home"
-      - "../server-skr/ctfuser:/ctfuser"
-      - "../server-skr/motd:/etc/motd"
+      - "./server-skr/home:/home"
+      - "./server-skr/ctfuser:/ctfuser"
+      - "./server-skr/motd:/etc/motd"
     command: bash -c "cp /ctfuser/passwd /etc/passwd;cp /ctfuser/group /etc/group;cp /ctfuser/shadow /etc/shadow;/usr/sbin/sshd -D"
+    networks:
+      internal:
+  
+  webshell:
+    container_name: "webshell"
+    build: ./webshell
+    environment:
+      - ALLOWED_NETWORKS=0.0.0.0/0
+      - SSH_PORT=22
+      - DEFAULT_IP=server-skr
+    networks:
+      internal:    
 
   netcat-container:
     container_name: "netcat-container"
-    build: ../netcat-container
+    build: ./netcat-container
     ports:
       - "3017:2000"
       - "3018:2001"

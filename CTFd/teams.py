@@ -100,7 +100,7 @@ def new():
         system('''docker exec server-skr bash -c 'echo "%s:%s" | chpasswd' ''' % (teamname,passphrase))
         system("docker exec server-skr cp -rp /ctf/. /home/%s/" % teamname)
         system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (teamname,teamname))
-	system('''docker exec server-skr bash -c 'chmod -w /home/%s' ''' % teamname)
+        system('''docker exec server-skr bash -c 'chmod -w /home/%s' ''' % teamname)
         system("docker exec server-skr cp /etc/passwd /ctfuser")
         system("docker exec server-skr cp /etc/shadow /ctfuser")
         system("docker exec server-skr cp /etc/group /ctfuser")

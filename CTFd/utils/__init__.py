@@ -1,33 +1,21 @@
-import mistune
-import six
-from flask import current_app as app, request, redirect, url_for, session, render_template, abort, jsonify
+from enum import Enum
+
+import cmarkgfm
+from flask import current_app as app
+
+# isort:imports-firstparty
 from CTFd.cache import cache
-from CTFd.models import (
-    db,
-    Challenges,
-    Fails,
-    Pages,
-    Configs,
-    Tracking,
-    Teams,
-    Files
-)
+from CTFd.models import Configs, db
 
-try:
-    import pathlib
-except ImportError:
-    import pathlib2 as pathlib
+string_types = (str,)
+text_type = str
+binary_type = bytes
 
-if six.PY2:
-    string_types = (str, unicode)
-    text_type = unicode
-    binary_type = str
-else:
-    string_types = (str,)
-    text_type = str
-    binary_type = bytes
 
-markdown = mistune.Markdown()
+def markdown(md):
+    return cmarkgfm.markdown_to_html_with_extensions(
+        md, extensions=["autolink", "table", "strikethrough"]
+    )
 
 
 def get_app_config(key, default=None):
@@ -37,23 +25,32 @@ def get_app_config(key, default=None):
 
 @cache.memoize()
 def _get_config(key):
-    config = Configs.query.filter_by(key=key).first()
+    config = db.session.execute(
+        Configs.__table__.select().where(Configs.key == key)
+    ).fetchone()
     if config and config.value:
         value = config.value
         if value and value.isdigit():
             return int(value)
-        elif value and isinstance(value, six.string_types):
-            if value.lower() == 'true':
+        elif value and isinstance(value, string_types):
+            if value.lower() == "true":
                 return True
-            elif value.lower() == 'false':
+            elif value.lower() == "false":
                 return False
             else:
                 return value
+    # Flask-Caching is unable to roundtrip a value of None.
+    # Return an exception so that we can still cache and avoid the db hit
+    return KeyError
 
 
 def get_config(key, default=None):
+    # Convert enums to raw string values to cache better
+    if isinstance(key, Enum):
+        key = str(key)
+
     value = _get_config(key)
-    if value is None:
+    if value is KeyError:
         return default
     else:
         return value
@@ -67,5 +64,10 @@ def set_config(key, value):
         config = Configs(key=key, value=value)
         db.session.add(config)
     db.session.commit()
+
+    # Convert enums to raw string values to cache better
+    if isinstance(key, Enum):
+        key = str(key)
+
     cache.delete_memoized(_get_config, key)
     return config

@@ -8,6 +8,7 @@ from CTFd.models import ma, Tags
 class TagSchema(ma.ModelSchema):
     class Meta:
         model = Tags
+        load_instance = True
         include_fk = True
         dump_only = ('id',)
 

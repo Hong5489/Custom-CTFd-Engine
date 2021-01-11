@@ -14,13 +14,21 @@
 	</form>
 	<div class="form-group">
 		<label>
-			New Binary Challenge
+			Discord Bot Token
 			<small class="form-text text-muted">
-				Type the C source code here
+				Type the discord bot token here
 			</small>
 		</label>
-		<input class="form-control" id="file_name" name="file_name" type="text" placeholder="Folder and File Name"><br>
-		<textarea class="form-control" id="file_content" name="file" rows="7"></textarea>
-	<button class="btn btn-md btn-primary float-right" onclick="create_binary()">Create</button>
+		<input class="form-control" id="token" name="token" type="text" placeholder="Token" value="{{get_config('token')}}"><br>
+		<label>
+                        Discord Channel ID
+                        <small class="form-text text-muted">
+                                Type the discord channel id here
+                        </small>
+                </label>
+
+		<input class="form-control" id="channel" name="channel" type="text" placeholder="Channel ID" value="{{get_config('channel')}}"><br>		
+
+		<button class="btn btn-md btn-primary float-right" onclick="update_token()">Update</button>
 	</div>
 </div>
