@@ -1,0 +1,5 @@
+ssl/ctfd.key
+ssl/ctfd.crt
+netcat-container/challs/*
+server-skr/home/*
+server-skr/ctfuser/*
