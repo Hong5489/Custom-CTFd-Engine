@@ -6,6 +6,7 @@ Custom made CTFd engine by SKR, live at [skrctf.me](skrctf.me). Upgraded to Pyth
 - Dynamic Flag for Web Challenges and Binary Challenges
 - Web Shell login using Team Credentials
 - Reverse Proxy for Web Challenges
+- Webshell using shellinabox
 - Arrange category priority
 - Arrange challenges by difficulty
 - Discord bot announce challenges

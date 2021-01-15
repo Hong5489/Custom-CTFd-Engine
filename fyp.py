@@ -11,11 +11,11 @@ def generateFlag(flag,team):
 def generateBinaryFlag(team):
 	import subprocess
 	import base64
-	challenges = subprocess.check_output(["docker","exec","server-skr","ls","/ctf/challenges/"], stderr=subprocess.STDOUT)[:-1].split('\n')
+	challenges = subprocess.check_output([b"docker",b"exec",b"server-skr",b"ls",b"/ctf/challenges/"], stderr=subprocess.STDOUT)[:-1].split(b'\n')
 	for c in challenges:
-		flag = subprocess.check_output(["docker","exec","server-skr","cat","/ctf/challenges/%s/flag.txt"%c], stderr=subprocess.STDOUT)[:-1]
+		flag = subprocess.check_output([b"docker",b"exec",b"server-skr",b"cat",b"/ctf/challenges/%s/flag.txt"%c], stderr=subprocess.STDOUT).decode()[:-1]
 		from os import system
-		system("""docker exec server-skr bash -c 'echo "%s" | base64 -d > /home/%s/challenges/%s/flag.txt'""" % (base64.b64encode(generateFlag(flag,team)).decode(),team.name,c))
+		system("""docker exec server-skr bash -c 'echo "%s" | base64 -d > /home/%s/challenges/%s/flag.txt'""" % (base64.b64encode(generateFlag(flag,team).encode()).decode(),team.name,c.decode()))
 
 def updateBinaryChallenge():
 	import subprocess
