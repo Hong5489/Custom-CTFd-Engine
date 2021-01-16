@@ -92,7 +92,7 @@ class ChallengeList(Resource):
                         'template': challenge_type.templates['view'],
                         'script': challenge_type.scripts['view'],
                         'lock':True,
-			#'requirement': prereqs
+			'requirement': [Challenges.query.filter(Challenges.id == p).first_or_404().name for p in list(prereqs)]
                     })
                     continue
             #         pass
