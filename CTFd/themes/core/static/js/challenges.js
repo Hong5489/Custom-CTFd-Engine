@@ -20,7 +20,7 @@ function loadchal(id) {
     if (obj.lock){
         ezal({
             title: "Challenge Locked!",
-            body: "You haven't unlocked this challenge yet!",
+            body: "You need to unlock "+obj.requirement+" to unlock this challenge!",
             button: "Got it!"
         });
         return;

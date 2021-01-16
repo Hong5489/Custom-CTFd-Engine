@@ -17,18 +17,34 @@ def generateBinaryFlag(team):
 		from os import system
 		system("""docker exec server-skr bash -c 'echo "%s" | base64 -d > /home/%s/challenges/%s/flag.txt'""" % (base64.b64encode(generateFlag(flag,team).encode()).decode(),team.name,c.decode()))
 
+#def updateBinaryChallenge():
+#	import subprocess
+#	from CTFd.models import Teams
+#	from os import system
+#	existing_user = subprocess.check_output([b"docker",b"exec",b"server-skr",b"cat",b"/ctfuser/group"], stderr=subprocess.STDOUT).decode().split('ssh:x:102:\n')[1].split('\n')[:-1]
+#	for e in existing_user:
+#		team_name = e.split(":x:")[0]
+#		team = Teams.query.filter_by(name=team_name).first_or_404()
+#		system("docker exec server-skr cp -rp /ctf/. /home/%s/" % team_name)
+#		system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (team_name,team_name))
+#		generateBinaryFlag(team)
+#	return "Success!"
+
 def updateBinaryChallenge():
+        from CTFd.utils import get_config
+        os.system(f"python3 update_binary_chal.py {get_config('SQLALCHEMY_DATABASE_URI')}")
+        return "Success"
+
+def updateTeamBinary(name):
 	import subprocess
 	from CTFd.models import Teams
 	from os import system
-	existing_user = subprocess.check_output(["docker","exec","server-skr","cat","/ctfuser/group"], stderr=subprocess.STDOUT).split('ssh:x:102:\n')[1].split('\n')[:-1]
-	for e in existing_user:
-		team_name = e.split(":x:")[0]
-		team = Teams.query.filter_by(name=team_name).first_or_404()
-		system("docker exec server-skr cp -rp /ctf/. /home/%s/" % team_name)
-		system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (team_name,team_name))
-		generateBinaryFlag(team)
-	return "Success!"
+	team = Teams.query.filter_by(name=name).first_or_404()
+	system("docker exec server-skr cp -rp /ctf/. /home/%s/" % name)
+	system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (name,name))
+	generateBinaryFlag(team)
+
+
 
 # def createBinaryChallenge():
 # 	from os import system

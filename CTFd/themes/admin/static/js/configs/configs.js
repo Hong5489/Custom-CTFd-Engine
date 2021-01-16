@@ -130,6 +130,27 @@ function update_binary(){
     });
 }
 
+function update_team_binary(){
+    CTFd.fetch('/api/v1/configs/updateTeamBinary',{
+        method:'POST',
+        body: JSON.stringify({"team": document.getElementById("team").value})
+    }).then(function(response) {
+        return response.json()
+    }).then(function (response) {
+        if (response.success) {
+            window.location.reload()
+        } else {
+            ezal({
+                title: "Error!",
+                body: "Update failed!",
+                button: "Okay"
+            });
+        }
+    });
+
+}
+
+
 function update_token(){
     CTFd.fetch('/api/v1/configs/updateToken',{
         method:'POST',

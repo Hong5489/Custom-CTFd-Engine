@@ -92,6 +92,7 @@ class ChallengeList(Resource):
                         'template': challenge_type.templates['view'],
                         'script': challenge_type.scripts['view'],
                         'lock':True,
+			#'requirement': prereqs
                     })
                     continue
             #         pass

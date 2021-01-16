@@ -104,6 +104,18 @@ class UpdateToken(Resource):
 		}
 
 
+@configs_namespace.route('/updateTeamBinary')
+class UpdateTeamBinary(Resource):
+        @admins_only
+        def post(self):
+                req = request.get_json()
+                from fyp import updateTeamBinary
+                updateTeamBinary(req["team"])
+                return {
+                    "success":True
+                }
+
+
 @configs_namespace.route('/<config_key>')
 class Config(Resource):
     @admins_only
