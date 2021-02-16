@@ -109,6 +109,15 @@ services:
       - "3012:2009"
       - "3020:2010"
 
+  linux2:
+    container_name: "linux2"
+    build: ../challenges/linux2/
+    hostname: "linux2"
+    ports:
+      - "3015:80"
+    networks:
+      internal:
+
 networks:
     default:
     internal:

@@ -92,7 +92,7 @@ class ChallengeList(Resource):
                         'template': challenge_type.templates['view'],
                         'script': challenge_type.scripts['view'],
                         'lock':True,
-			'requirement': [Challenges.query.filter(Challenges.id == p).first_or_404().name for p in list(prereqs)]
+			'requirement': [Challenges.query.filter(Challenges.id == p).first().name for p in list(prereqs) if Challenges.query.filter(Challenges.id == p).first()]
                     })
                     continue
             #         pass

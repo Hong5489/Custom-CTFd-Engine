@@ -30,7 +30,7 @@ def users_listing():
             users = Users.query.filter(Users.email.like('%{}%'.format(q))).order_by(Users.id.asc()).all()
         elif field == 'affiliation':
             users = Users.query.filter(Users.affiliation.like('%{}%'.format(q))).order_by(Users.id.asc()).all()
-        return render_template('admin/users/users.html', users=users, pages=None, curr_page=None, q=q, field=field)
+        return render_template('admin/users/users.html', users=users, pages=0, curr_page=0, q=q, field=field)
 
     page = abs(int(page))
     results_per_page = 50
