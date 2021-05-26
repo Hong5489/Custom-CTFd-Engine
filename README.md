@@ -1,5 +1,5 @@
 # Custom CTFd engine
-Custom made CTFd engine by SKR, live at [skrctf.me](skrctf.me). Upgraded to Python3!
+Custom made CTFd engine by SKR, live at [skrctf.me](https://skrctf.me). Upgraded to Python3!
 
 ## Features
 - Flag Sharing Prevention
@@ -11,6 +11,8 @@ Custom made CTFd engine by SKR, live at [skrctf.me](skrctf.me). Upgraded to Pyth
 - Arrange challenges by difficulty
 - Discord bot announce challenges
 - Netcat container for multiple challenges
+- Share writeup with other players
+- Like challenge feature
 
 First run this:
 ```
