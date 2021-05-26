@@ -799,6 +799,35 @@ class Category(db.Model):
     def __init__(self, *args, **kwargs):
         super(Category, self).__init__(**kwargs)
 
+class Writeups(db.Model):
+    __tablename__ = 'writeups'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    challenge_id = db.Column(db.Integer, db.ForeignKey('challenges.id'))
+    link = db.Column(db.String(100))
+
+    def __init__(self, *args, **kwargs):
+        super(Writeups, self).__init__(**kwargs)
+
+class Likes(db.Model):
+    __tablename__ = 'likes'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    challenge_id = db.Column(db.Integer, db.ForeignKey('challenges.id'))
+
+    def getCount(challenge_id):
+        return Likes.query.filter_by(challenge_id=challenge_id).count()
+
+    def checkUserLike(challenge_id):
+        from CTFd.utils.user import get_current_user
+        user = get_current_user()
+        return Likes.query.filter_by(challenge_id=challenge_id,user_id=user.id)
+
+    def __init__(self, *args, **kwargs):
+        super(Likes, self).__init__(**kwargs)
+        
+
+
 @cache.memoize()
 def get_config(key):
     """

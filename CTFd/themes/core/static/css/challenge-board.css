@@ -44,3 +44,7 @@
 .key-submit .btn {
     height: 51px;
 }
+
+#likes:hover {
+    color: #e0245e;
+}

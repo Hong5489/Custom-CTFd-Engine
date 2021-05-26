@@ -1,7 +1,6 @@
 from CTFd.plugins import register_plugin_assets_directory
 from CTFd.plugins.flags import get_flag_class
 from CTFd.models import db, Solves, Fails, Flags, Challenges, ChallengeFiles, Tags, Hints, ShareFlags
-from CTFd import utils
 from CTFd.utils.user import get_ip
 from CTFd.utils.uploads import upload_file, delete_file
 from flask import Blueprint
@@ -59,6 +58,7 @@ class CTFdStandardChallenge(BaseChallenge):
         :return: Challenge object, data dictionary to be returned to the user
         """
         from fyp import generateDifficulty
+        from CTFd.models import Likes
         difficulty = generateDifficulty(challenge.difficulty)
         data = {
             'id': challenge.id,
@@ -70,6 +70,8 @@ class CTFdStandardChallenge(BaseChallenge):
             'max_attempts': challenge.max_attempts,
             'type': challenge.type,
             'difficulty': difficulty,
+            'like_count': Likes.getCount(challenge.id),
+            'liked': Likes.checkUserLike(challenge.id).count(),
             'type_data': {
                 'id': CTFdStandardChallenge.id,
                 'name': CTFdStandardChallenge.name,

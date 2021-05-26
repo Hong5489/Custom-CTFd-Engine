@@ -12,10 +12,18 @@
 				{% else %}
 					<li class="nav-item">
 						<a class="nav-link challenge-solves" href="#solves">
-							{{ solves }} {% if solves > 1 %}Solves{% else %}Solves{% endif %}
+							{% if solves >= 1 %}{{ solves }} Solves{% else %}No solve{% endif %}
 						</a>
 					</li>
 				{% endif %}
+				<li class="nav-item">
+					<a class="nav-link challenge-writeup" href="#writeup">
+						Writeups
+					</a>
+				</li>
+				<li class="nav-item" id="likes" {% if liked %}style="color:#e0245e;"{% endif %} onclick="clickLike({{like_count}},{% if liked %}true{% else %}false{%endif%})">
+					<i class="fas fa-heart mt-2 ml-3"></i><span id="likeCount"> {{like_count}}</span>
+				</li>
 			</ul>
 			<div role="tabpanel">
 				<div class="tab-content">
@@ -104,6 +112,33 @@
 								</table>
 							</div>
 						</div>
+					</div>
+					<div role="tabpanel" class="tab-pane fade" id="writeup">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table table-striped text-center">
+									<thead>
+									<tr>
+										<td><b>Link</b>
+										</td>
+										<td><b>Author</b>
+										</td>
+									</tr>
+									</thead>
+									<tbody id="challenge-writeup-names">
+									</tbody>
+								</table>
+							</div>
+							<div class="col-md-9 form-group">
+								<input class="form-control" type="text" name="link" id="link-input" placeholder="Writeup Link"/>
+								
+							</div>
+							<div class="col-md-3 form-group key-submit">
+								<button type="submit" id="submit-link" class="btn btn-md btn-outline-secondary float-right">Add
+								</button>
+							</div>
+						</div>
+
 					</div>
 				</div>
 			</div>

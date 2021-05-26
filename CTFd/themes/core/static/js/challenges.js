@@ -90,6 +90,7 @@ function updateChalWindow(obj) {
                     }
                 });
 
+
                 $(".input-field").bind({
                     focus: function () {
                         $(this).parent().addClass('input--filled');
@@ -108,6 +109,48 @@ function updateChalWindow(obj) {
 
                 window.location.replace(window.location.href.split('#')[0] + '#' + obj.name);
                 $('#challenge-window').modal();
+
+
+                $('.challenge-writeup').click(function (e) {
+                    getwriteups($('#challenge-id').val())
+                });
+
+
+
+                $('#submit-link').click(function (e) {
+                    var link = $('#link-input').val();
+                    var id = $('#challenge-id').val();
+                    console.log("test")
+                    var params = {
+                        'link': link
+                    };
+                    ezq({
+                        title: "Post Writeup",
+                        body: "Are you sure you want to post the writeup link {0}?".format("<strong>" + htmlentities(link) + "</strong>"),
+                        success: function () {
+                            CTFd.fetch('/api/v1/challenges/' + id + '/writeup', {
+                                method: 'POST',
+                                body: JSON.stringify(params)
+                            }).then(function (response) {
+                                return response.json();
+                            }).then(function (response) {
+                                if (response.success) {
+                                    ezal({
+                                        title: "Post Writeup",
+                                        body: "Successfully posted your writeup link",
+                                        button: "Got it!"
+                            });
+                                }else{
+                                    ezal({
+                                        title: "Post Writeup",
+                                        body: "Failed to post your writeup link",
+                                        button: "Got it!"
+                                    });
+                                }
+                            });
+                        }
+                    });
+                });
             });
         });
     });
@@ -235,6 +278,48 @@ function getsolves(id) {
     });
 }
 
+function getwriteups(id) {
+    $.get(script_root + '/api/v1/challenges/' + id + '/writeup', function (response) {
+        var data = response.data;
+        var box = $('#challenge-writeup-names');
+        box.empty();
+        for (var i = 0; i < data.length; i++) {
+            var name = data[i].author;
+            var account_url = data[i].account_url;
+            var link = data[i].link;
+            box.append('<tr><td><a href="{0}" target="_blank">{1}</td><td><a href="{2}">{3}</td></tr>'.format(htmlentities(link),htmlentities(link),account_url,htmlentities(name)));
+        }
+    });
+}
+
+
+function clickLike(likeCount,liked){
+    if(liked){
+        likeCount--;
+    }
+    if($('#likes').attr('style')){
+        $('#likes').attr('style',"");
+        $('#likeCount').html(" "+(likeCount))
+    }else{
+        $('#likes').attr('style',"color:#e0245e");
+        $('#likeCount').html(" "+(likeCount+1))
+    }
+    var id = $('#challenge-id').val();
+    CTFd.fetch('/api/v1/challenges/' + id + '/like', {
+        method: 'POST'
+    }).then(function (response) {
+        return response.json();
+    }).then(function (response) {
+        if (!response.success) {
+            ezal({
+                title: "Error",
+                body: "Failed to like the current challenge",
+                button: "Got it!"
+            });
+        }
+    });
+}
+
 function loadchals(cb) {
     $.get(script_root + "/api/v1/challenges", function (response) {
         var categories = [];
@@ -332,6 +417,8 @@ function loadchals(cb) {
 $('#submit-key').click(function (e) {
     submitkey($('#challenge-id').val(), $('#submission-input').val(), $('#nonce').val())
 });
+
+
 
 $('.challenge-solves').click(function (e) {
     getsolves($('#challenge-id').val())
