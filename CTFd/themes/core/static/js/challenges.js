@@ -120,7 +120,6 @@ function updateChalWindow(obj) {
                 $('#submit-link').click(function (e) {
                     var link = $('#link-input').val();
                     var id = $('#challenge-id').val();
-                    console.log("test")
                     var params = {
                         'link': link
                     };
@@ -138,8 +137,12 @@ function updateChalWindow(obj) {
                                     ezal({
                                         title: "Post Writeup",
                                         body: "Successfully posted your writeup link",
-                                        button: "Got it!"
-                            });
+                                        button: "Got it!",
+                                        success: function(){
+                                            document.location.reload(true);
+                                            console.log("fcuk");
+                                        }
+                                    });
                                 }else{
                                     ezal({
                                         title: "Post Writeup",

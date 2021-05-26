@@ -56,6 +56,7 @@ class DynamicValueChallenge(BaseChallenge):
         """
         challenge = DynamicChallenge.query.filter_by(id=challenge.id).first()
         from fyp import generateDifficulty
+        from CTFd.models import Likes
         difficulty = generateDifficulty(challenge.difficulty)
         data = {
             'id': challenge.id,
@@ -70,6 +71,8 @@ class DynamicValueChallenge(BaseChallenge):
             'max_attempts': challenge.max_attempts,
             'type': challenge.type,
             'difficulty': difficulty,
+            'like_count': Likes.getCount(challenge.id),
+            'liked': Likes.checkUserLike(challenge.id).count(),
             'type_data': {
                 'id': DynamicValueChallenge.id,
                 'name': DynamicValueChallenge.name,

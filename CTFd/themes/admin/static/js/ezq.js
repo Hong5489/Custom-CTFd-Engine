@@ -39,8 +39,12 @@ var success_template = "<div class=\"alert alert-success alert-dismissable submi
 function ezal(args) {
     var res = modal.format(args.title, args.body);
     var obj = $(res);
-    var button = '<button type="button" class="btn btn-primary" data-dismiss="modal">{0}</button>'.format(args.button);
+    var button = $('<button type="button" class="btn btn-primary" data-dismiss="modal">{0}</button>'.format(args.button));
 
+    $(button).click(function(){
+        args.success();
+    });
+    
     obj.find('.modal-footer').append(button);
     $('main').append(obj);
 
@@ -49,6 +53,7 @@ function ezal(args) {
     $(obj).on('hidden.bs.modal', function (e) {
         $(this).modal('dispose');
     });
+
 
     return obj;
 }
