@@ -14,6 +14,7 @@ Custom made CTFd engine by SKR, live at [skrctf.me](https://skrctf.me). Upgraded
 - Share writeup with other players
 - Like challenge feature
 
+## How to Setup
 First run this:
 ```
 pip install -r requirements.txt
