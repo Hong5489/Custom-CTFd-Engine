@@ -73,6 +73,25 @@ RUN gcc -o beginner5 beginner5.c -std=c99
 COPY beginner_reverse/beginner6.c .
 RUN gcc -o beginner6 beginner6.c -std=c99
 
+RUN cp -rp /ctf/. /chal_template/
+WORKDIR /chal_template/challenges/simple_overflow
+RUN rm overflow && ln -s /ctf/challenges/simple_overflow/overflow overflow 
+
+WORKDIR /chal_template/challenges/auth_me
+RUN rm auth && ln -s /ctf/challenges/auth_me/auth auth 
+
+WORKDIR /chal_template/challenges/auth_me2
+RUN rm auth2 && ln -s /ctf/challenges/auth_me2/auth2 auth2
+
+WORKDIR /chal_template/challenges/overflow2
+RUN rm overflow2 && ln -s /ctf/challenges/overflow2/overflow2 overflow2
+
+WORKDIR /chal_template/challenges/overflow3
+RUN rm overflow3 && ln -s /ctf/challenges/overflow3/overflow3 overflow3
+
+WORKDIR /chal_template/challenges/guess_num
+RUN rm guess_num && ln -s /ctf/challenges/guess_num/guess_num guess_num
+
 WORKDIR /ctf
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
