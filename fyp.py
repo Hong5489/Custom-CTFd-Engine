@@ -40,7 +40,7 @@ def updateTeamBinary(name):
 	from CTFd.models import Teams
 	from os import system
 	team = Teams.query.filter_by(name=name).first_or_404()
-	system("docker exec server-skr cp -rp /ctf/. /home/%s/" % name)
+	system("docker exec server-skr cp -rp /chal_template/. /home/%s/" % name)
 	system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (name,name))
 	generateBinaryFlag(team)
 

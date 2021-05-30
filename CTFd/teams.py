@@ -98,7 +98,7 @@ def new():
         db.session.commit()
         system("docker exec server-skr useradd -m %s -s /bin/bash" % teamname)
         system('''docker exec server-skr bash -c 'echo "%s:%s" | chpasswd' ''' % (teamname,passphrase))
-        system("docker exec server-skr cp -rp /ctf/. /home/%s/" % teamname)
+        system("docker exec server-skr cp -rp /chal_template/. /home/%s/" % teamname)
         system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (teamname,teamname))
         system('''docker exec server-skr bash -c 'chmod -w /home/%s' ''' % teamname)
         system("docker exec server-skr cp /etc/passwd /ctfuser")
