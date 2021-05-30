@@ -7,7 +7,7 @@ RUN mkdir /root/.ssh
 
 RUN mkdir /ctf
 RUN mkdir /ctfuser
-RUN chmod 700 /ctf /ctfuser
+RUN chmod 755 /ctf /ctfuser
 
 RUN mkdir /ctf/challenges
 RUN mkdir /ctf/challenges/simple_overflow
