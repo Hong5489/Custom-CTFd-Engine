@@ -1,26 +1,16 @@
 <div role="tabpanel" class="tab-pane" id="server">
 
 	<form autocomplete="off" class="w-100">
-		<div class="form-group">
-			<label>
-				Update Binary Challenge
-				<small class="form-text text-muted">
-					Click to update all teams to the latest binary challenges 
-				</small>
-			</label>
-			<button class="btn btn-md btn-primary float-right" onclick="update_binary()">Update</button>
-		</div>
-		<div class="form-group">
-                        <label>
-                               	Update Team Binary Challenge
-                                <small class="form-text text-muted">
-                                        Click to update specific team to the latest binary challenges
-                                </small>
-                        </label>
-			<input class="form-control" id="team" name="team" type="text" placeholder="Team Name"><br>
-                        <button class="btn btn-md btn-primary float-right" onclick="update_team_binary()">Update</button>
-                </div>
-
+        <div class="form-group">
+            <label>
+                   	Update Binary Challenge
+                    <small class="form-text text-muted">
+                            Click to update a binary challenges to all the teams
+                    </small>
+            </label>
+			<input class="form-control" id="challenge" name="challenge" type="text" placeholder="Challenge Directory"><br>
+                        <button class="btn btn-md btn-primary float-right" onclick="update_binary()">Update</button>
+        </div>
 	</form>
 	<div class="form-group">
 		<label>

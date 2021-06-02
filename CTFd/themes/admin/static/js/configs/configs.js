@@ -122,18 +122,8 @@ function update_configs(obj){
 
 function update_binary(){
     CTFd.fetch('/api/v1/configs/updateBinary',{
-        method:'GET'
-    }).then(function(response) {
-        return response.json()
-    }).then(function(data) {
-        window.location.reload();
-    });
-}
-
-function update_team_binary(){
-    CTFd.fetch('/api/v1/configs/updateTeamBinary',{
         method:'POST',
-        body: JSON.stringify({"team": document.getElementById("team").value})
+        body: JSON.stringify({"challenge": document.getElementById("challenge").value})
     }).then(function(response) {
         return response.json()
     }).then(function (response) {
@@ -147,7 +137,6 @@ function update_team_binary(){
             });
         }
     });
-
 }
 
 

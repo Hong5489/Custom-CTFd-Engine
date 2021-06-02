@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 sqldb = SQLAlchemy(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = sys.argv[1]
-
+update_challenge = sys.argv[2]
 
 sqlDB = SQLAlchemy(app)
 sqlDB.init_app(app)
@@ -40,17 +40,16 @@ def generateFlag(flag,team):
 def generateBinaryFlag(team):
 	import subprocess
 	import base64
-	challenges = subprocess.check_output([b"docker",b"exec",b"server-skr",b"ls",b"/ctf/challenges/"], stderr=subprocess.STDOUT)[:-1].split(b'\n')
-	for c in challenges:
-		flag = subprocess.check_output([b"docker",b"exec",b"server-skr",b"cat",b"/ctf/challenges/%s/flag.txt"%c], stderr=subprocess.STDOUT).decode()[:-1]
-		from os import system
-		system("""docker exec server-skr bash -c 'echo "%s" | base64 -d > /home/%s/challenges/%s/flag.txt'""" % (base64.b64encode(generateFlag(flag,team).encode()).decode(),team.name,c.decode()))
+	from os import system
+	system("""docker exec server-skr bash -c 'echo "%s" | base64 -d > /home/%s/challenges/%s/flag.txt'""" % (base64.b64encode(generateFlag(flag,team).encode()).decode(),team.name,update_challenge))
 
 
 import subprocess
 from CTFd.models import Teams
 from os import system
 existing_user = subprocess.check_output([b"docker",b"exec",b"server-skr",b"cat",b"/ctfuser/group"], stderr=subprocess.STDOUT).decode().split('ssh:x:102:\n')[1].split('\n')[:-1]
+
+flag = subprocess.check_output([b"docker",b"exec",b"server-skr",b"cat",b"/ctf/challenges/%s/flag.txt"%update_challenge], stderr=subprocess.STDOUT).decode()[:-1]
 for e in existing_user:
 	team_name = e.split(":x:")[0]
 	team = Teams.query.filter_by(name=team_name).first_or_404()
@@ -58,8 +57,8 @@ for e in existing_user:
 	t.join()
 
 def updateBinary(team):
-	system("docker exec server-skr cp -rp /ctf/. /home/%s/" % team.name)
-	system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (team.name,team.name))
+	system("docker exec server-skr cp -rp /chal_template/challenges/%s /home/%s/challenges/%s" % (update_challenge,team.name,update_challenge))
+	# system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (team.name,team.name))
 	generateBinaryFlag(team)
 
 
