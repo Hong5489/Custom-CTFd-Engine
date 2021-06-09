@@ -31,24 +31,25 @@ def generateBinaryFlag(team):
 #	return "Success!"
 
 def updateBinaryChallenge(chal):
-        # from CTFd.utils import get_config
-        # os.system(f"python3 update_binary_chal.py {get_config('SQLALCHEMY_DATABASE_URI')}")
-        # return "Success"
-	import subprocess
-	from CTFd.models import Teams
-	from os import system
-	import base64
-	existing_user = Teams.query.filter(Teams.secret.isnot(None))
-
-	flag = subprocess.check_output([b"docker",b"exec",b"server-skr",b"cat",b"/ctf/challenges/%s/flag.txt"%chal.encode()], stderr=subprocess.STDOUT).decode()[:-1]
-	for e in existing_user:
-		team_name = e.name
-
-		system("docker exec server-skr cp -rp /chal_template/challenges/%s/. /home/%s/challenges/%s" % (chal,team_name,chal))
-		system("""docker exec server-skr bash -c 'echo "%s" | base64 -d > /home/%s/challenges/%s/flag.txt'""" % (base64.b64encode(generateFlag(flag,e).encode()).decode(),team_name,chal))
-		# system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (team.name,team.name))
-		# generateBinaryFlag(team)
+	import os
+	from CTFd.utils import get_config
+	os.system(f"python3 update_binary_chal.py \"{chal}\"")
 	return "Success"
+	# import subprocess
+	# from CTFd.models import Teams
+	# from os import system
+	# import base64
+	# existing_user = Teams.query.filter(Teams.secret.isnot(None))
+
+	# flag = subprocess.check_output([b"docker",b"exec",b"server-skr",b"cat",b"/ctf/challenges/%s/flag.txt"%chal.encode()], stderr=subprocess.STDOUT).decode()[:-1]
+	# for e in existing_user:
+	# 	team_name = e.name
+
+	# 	system("docker exec server-skr cp -rp /chal_template/challenges/%s/. /home/%s/challenges/%s" % (chal,team_name,chal))
+	# 	system("""docker exec server-skr bash -c 'echo "%s" | base64 -d > /home/%s/challenges/%s/flag.txt'""" % (base64.b64encode(generateFlag(flag,e).encode()).decode(),team_name,chal))
+	# 	# system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (team.name,team.name))
+	# 	# generateBinaryFlag(team)
+	# return "Success"
 
 def updateTeamBinary(name):
 	import subprocess
