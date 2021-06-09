@@ -241,7 +241,7 @@ function marksolves(cb) {
         if (cb) {
             cb();
         }
-    });
+	    });
 }
 
 function load_user_solves(cb) {
@@ -290,7 +290,7 @@ function getwriteups(id) {
             var name = data[i].author;
             var account_url = data[i].account_url;
             var link = data[i].link;
-            box.append('<tr><td><a href="{0}" target="_blank">{1}</td><td><a href="{2}">{3}</td></tr>'.format(htmlentities(link),htmlentities(link),account_url,htmlentities(name)));
+            box.append('<tr><td><a href="{0}" target="_blank" style="word-break: break-word;">{1}</td><td><a href="{2}">{3}</td></tr>'.format(htmlentities(link),htmlentities(link),account_url,htmlentities(name)));
         }
     });
 }

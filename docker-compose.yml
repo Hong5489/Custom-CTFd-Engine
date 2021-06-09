@@ -74,26 +74,26 @@ services:
   server-skr:
     container_name: "server-skr"
     build: ./server-skr
-    expose:
-      - "22"
+    #expose:
+    #  - "22"
+    ports:
+      - "5000:22"
     hostname: "server-skr"
     volumes:
       - "./server-skr/home:/home"
       - "./server-skr/ctfuser:/ctfuser"
       - "./server-skr/motd:/etc/motd"
     command: bash -c "cp /ctfuser/passwd /etc/passwd;cp /ctfuser/group /etc/group;cp /ctfuser/shadow /etc/shadow;/usr/sbin/sshd -D"
-    networks:
-      internal:
+    #networks:
+    #  internal:
   
   webshell:
     container_name: "webshell"
     build: ./webshell
     environment:
       - ALLOWED_NETWORKS=0.0.0.0/0
-      - SSH_PORT=22
-      - DEFAULT_IP=server-skr
-    networks:
-      internal:    
+      - SSH_PORT=5000
+      - DEFAULT_IP=skrctf.me
 
   netcat-container:
     container_name: "netcat-container"

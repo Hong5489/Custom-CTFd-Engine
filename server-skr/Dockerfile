@@ -1,5 +1,5 @@
 FROM debian:stable-slim
-RUN apt-get update && apt-get -y install gcc socat nano openssh-server
+RUN apt-get update && apt-get -y install gcc socat nano openssh-server python3 netcat
 
 COPY config /etc/ssh/sshd_config
 RUN mkdir /var/run/sshd

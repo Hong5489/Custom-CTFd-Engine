@@ -38,7 +38,7 @@ def updateBinaryChallenge(chal):
 	from CTFd.models import Teams
 	from os import system
 	import base64
-	existing_user = Teams.query.all()
+	existing_user = Teams.query.filter(Teams.secret.isnot(None))
 
 	flag = subprocess.check_output([b"docker",b"exec",b"server-skr",b"cat",b"/ctf/challenges/%s/flag.txt"%chal.encode()], stderr=subprocess.STDOUT).decode()[:-1]
 	for e in existing_user:
