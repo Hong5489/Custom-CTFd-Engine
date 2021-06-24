@@ -33,7 +33,7 @@ def generateBinaryFlag(team):
 def updateBinaryChallenge(chal):
 	import os
 	from CTFd.utils import get_config
-	os.system(f"python3 update_binary_chal.py \"{chal}\"")
+	os.system(f"python3 update_binary_chal.py \"{chal}\" &")
 	return "Success"
 	# import subprocess
 	# from CTFd.models import Teams

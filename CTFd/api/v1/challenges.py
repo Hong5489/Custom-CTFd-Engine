@@ -736,13 +736,8 @@ class ChallengeWriteup(Resource):
 
 		writeups = Writeups.query.filter_by(challenge_id=challenge_id).all()
 
-		endpoint = None
-		if get_config('user_mode') == TEAMS_MODE:
-			endpoint = 'teams.public'
-			arg = 'team_id'
-		elif get_config('user_mode') == USERS_MODE:
-			endpoint = 'users.public'
-			arg = 'user_id'
+		endpoint = 'users.public'
+		arg = 'user_id'
 
 		for w in writeups:
 			user = Users.query.filter_by(id=w.user_id).first_or_404()
