@@ -110,15 +110,16 @@ services:
       - "3013:2008"
       - "3012:2009"
       - "3020:2010"
+      #- "3021:2011"
+      - "3014:2011"
+      #- "3022:2012"
 
   linux2:
     container_name: "linux2"
-    build: ../challenges/linux2/
-    hostname: "linux2"
+    build: ../linux2/
+    hostname: "linux-tutorial2"
     ports:
-      - "3015:80"
-    networks:
-      internal:
+      - "3015:2000"
 
 networks:
     default:
