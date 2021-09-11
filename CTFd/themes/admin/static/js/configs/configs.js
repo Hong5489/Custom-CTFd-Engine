@@ -140,10 +140,16 @@ function update_binary(){
 }
 
 
-function update_token(){
+function update_token(type){
+    var text; 
+    if(type === "discord"){
+        text = JSON.stringify({"type":type,"token": document.getElementById("token").value,"channel": document.getElementById("channel").value});
+    }else if (type === "ipinfo") {
+        text = JSON.stringify({"type":type,"token": document.getElementById("ipinfo_token").value});
+    }
     CTFd.fetch('/api/v1/configs/updateToken',{
         method:'POST',
-	body: JSON.stringify({"token": document.getElementById("token").value,"channel": document.getElementById("channel").value})
+	    body: text
     }).then(function(response) {
         return response.json()
     }).then(function (response) {
@@ -157,8 +163,8 @@ function update_token(){
             });
         }
     });
-
 }
+
 
 function create_binary(){
     var params = {

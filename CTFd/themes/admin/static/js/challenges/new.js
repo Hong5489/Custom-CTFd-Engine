@@ -8,11 +8,12 @@ function load_chal_template(challenge){
         $.get(script_root + challenge.templates.create, function (template_data) {
             var template = nunjucks.compile(template_data);
             $("#create-chal-entry-div").html(template.render({'nonce': nonce, 'script_root': script_root}));
-            $.get(script_root + '/api/v1/challenges/category', function(response){
+            $.get(script_root + '/api/v1/category', function(response){
                 var data = response.data;
                 for (var key of data){
                     var option = $("<option/>");
-                    option.text(key);
+                    option.attr('value', key.id);
+                    option.text(key.name);
                     $("#category-select").append(option);
                 }
             });

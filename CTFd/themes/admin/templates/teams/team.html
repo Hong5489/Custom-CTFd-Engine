@@ -262,6 +262,7 @@
 				<thead>
 				<tr>
 					<td class="text-center"><b>IP Address</b></td>
+					<td class="text-center"><b>Country</b></td>
 					<td class="text-center"><b>Last Seen</b></td>
 				</tr>
 				</thead>
@@ -269,6 +270,7 @@
 				{% for addr in addrs %}
 					<tr>
 						<td class="text-center">{{ addr[0] }}</td>
+						<td class="text-center">{{ getIPinfo(addr[0]) }}</td>
 						<td class="text-center solve-time">
 							<script>document.write(moment("{{ addr[1]|isoformat }}").local().format('MMMM Do, h:mm:ss A'))</script>
 						</td>

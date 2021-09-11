@@ -41,3 +41,4 @@ cmarkgfm==0.4.2
 gevent==20.9.0            # via -r requirements.in
 greenlet==0.4.17          # via gevent
 discord.py
+ipinfo

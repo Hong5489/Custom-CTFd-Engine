@@ -36,11 +36,13 @@ class ShowCategory(Resource):
         data = request_data.get("data")
         # Category.query.delete()
         # db.session.commit()
+        # print(data)
         import re
-        for i,r in enumerate(re.findall("([0-9]+)</td><td><span>(.*)</span>",data)):
-            number, name = int(r[0]),r[1]
-            c = Category.query.filter_by(number=number).first_or_404()
+        for i,r in enumerate(re.findall("<td id=\"([0-9]+)\">([0-9]+)</td><td><span>",data)):
+            cat_id ,number = int(r[0]),int(r[1])
+            c = Category.query.filter_by(id=cat_id).first_or_404()
             c.number = i+1
+            # print(c)
         db.session.commit()
         return "Success"
 
@@ -55,7 +57,8 @@ class NewCategory(Resource):
         else:
             request_data = request.get_json()
         name = request_data.get("name")
-        db.session.add(Category(name=name))
+        count = db.session.query(Category.number).count()
+        db.session.add(Category(name=name,number=count+1))
         db.session.commit()
         return "Success"
 

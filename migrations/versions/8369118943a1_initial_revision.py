@@ -71,6 +71,7 @@ def upgrade():
     sa.Column('type', sa.String(length=80), nullable=True),
     sa.Column('state', sa.String(length=80), nullable=False),
     sa.Column('requirements', JSON, nullable=True),
+    sa.Column('difficulty', sa.Integer(), default=0),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('config',

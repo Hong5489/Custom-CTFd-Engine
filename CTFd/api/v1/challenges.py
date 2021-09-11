@@ -76,6 +76,7 @@ class ChallengeList(Resource):
 
 		response = []
 		tag_schema = TagSchema(view='user', many=True)
+		from fyp import selectCategory
 		for challenge in challenges:
 			challenge_type = get_chal_class(challenge.type)
 			if challenge.requirements:
@@ -90,7 +91,8 @@ class ChallengeList(Resource):
 						'type': challenge_type.name,
 						'name': challenge.name,
 						'value': challenge.value,
-						'category': challenge.category,
+						# 'category': challenge.category,
+						'category_id': challenge.category_id,
 						'tags': tag_schema.dump(challenge.tags).data,
 						'template': challenge_type.templates['view'],
 						'script': challenge_type.scripts['view'],
@@ -118,7 +120,8 @@ class ChallengeList(Resource):
 				'type': challenge_type.name,
 				'name': challenge.name,
 				'value': challenge.value,
-				'category': challenge.category,
+				# 'category': challenge.category,
+				'category_id': challenge.category_id,
 				'tags': tag_schema.dump(challenge.tags).data,
 				'template': challenge_type.templates['view'],
 				'script': challenge_type.scripts['view'],

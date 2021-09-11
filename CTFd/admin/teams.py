@@ -73,8 +73,8 @@ def teams_detail(team_id):
     addrs = db.session.query(Tracking.ip, last_seen) \
                       .filter(Tracking.user_id.in_(member_ids)) \
                       .group_by(Tracking.ip) \
-                      .order_by(last_seen.desc()).all()
-
+                      .order_by(last_seen.desc()).limit(10).all()
+    from fyp import getIPinfo
     return render_template(
         'admin/teams/team.html',
         team=team,
@@ -86,4 +86,5 @@ def teams_detail(team_id):
         missing=missing,
         awards=awards,
         addrs=addrs,
+        getIPinfo=getIPinfo
     )

@@ -12,7 +12,12 @@
 			Category<br>
 			<small class="form-text text-muted">Challenge Category</small>
 		</label>
-		<input type="text" class="form-control chal-category" name="category" value="{{ challenge.category }}">
+		<!-- <input type="text" class="form-control chal-category" name="category" value="{{ challenge.category }}"> -->
+		<select class="form-control chal-category" name="category_id">
+			{% for c in category %}
+				<option value={{c.id}} {% if c.id == challenge.category_id %}selected{% endif %}>{{c.name}}</option>
+			{% endfor %}
+		</select>
 	</div>
 
 	<div class="form-group">

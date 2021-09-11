@@ -11,14 +11,14 @@ import six
 @admin.route('/admin/challenges')
 @admins_only
 def challenges_listing():
-    from fyp import showCategory
+    from fyp import selectCategory
     challenges = Challenges.query.all()
-    return render_template('admin/challenges/challenges.html', challenges=challenges,category=showCategory())
+    return render_template('admin/challenges/challenges.html', challenges=challenges,selectCategory=selectCategory)
 
 @admin.route('/admin/challenges/<int:challenge_id>')
 @admins_only
 def challenges_detail(challenge_id):
-    from fyp import showCategory
+    from fyp import selectCategory,showCategoryDesc
     challenges = dict(Challenges.query.with_entities(Challenges.id, Challenges.name).all())
     challenge = Challenges.query.filter_by(id=challenge_id).first_or_404()
     solves = Solves.query.filter_by(challenge_id=challenge.id).all()
@@ -31,7 +31,8 @@ def challenges_detail(challenge_id):
             tpl = tpl.decode('utf-8')
         update_j2 = render_template_string(
             tpl,
-            challenge=challenge
+            challenge=challenge,
+            category=showCategoryDesc()
         )
 
     update_script = url_for('views.static_html', route=challenge_class.scripts['update'].lstrip('/'))
@@ -43,7 +44,7 @@ def challenges_detail(challenge_id):
         challenges=challenges,
         solves=solves,
         flags=flags,
-        category=showCategory()[challenge.category_id]
+        category=selectCategory(challenge.category_id).name
     )
 
 

@@ -1,20 +1,6 @@
 version: '2.1'
 
 services:
-  db:
-    image: mariadb:10.4
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=ctfd
-      - MYSQL_USER=ctfd
-      - MYSQL_PASSWORD=ctfd
-    volumes:
-      - .data/mysql:/var/lib/mysql
-    networks:
-        internal:
-    # This command is required to set important mariadb defaults
-    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
-  
   proxy:
     image: nginx:alpine
     restart: always
@@ -33,7 +19,21 @@ services:
       internal:
     depends_on:
       - ctfd
-
+  
+  db:
+    image: mariadb:10.4
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=ctfd
+      - MYSQL_USER=ctfd
+      - MYSQL_PASSWORD=ctfd
+    volumes:
+      - .data/mysql:/var/lib/mysql
+    networks:
+        internal:
+    # This command is required to set important mariadb defaults
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
+  
   
   ctfd:
     build: .
@@ -61,7 +61,6 @@ services:
     networks:
         default:
         internal:
-
 
   cache:
     image: redis:4

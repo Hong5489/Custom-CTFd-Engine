@@ -76,7 +76,7 @@ def users_detail(user_id):
     addrs = db.session.query(Tracking.ip, last_seen) \
         .filter_by(user_id=user_id) \
         .group_by(Tracking.ip) \
-        .order_by(last_seen.desc()).all()
+        .order_by(last_seen.desc()).limit(10).all()
 
     # Get Fails
     fails = user.get_fails(admin=True)
@@ -88,6 +88,7 @@ def users_detail(user_id):
     score = user.get_score(admin=True)
     place = user.get_place(admin=True)
 
+    from fyp import getIPinfo
     return render_template(
         'admin/users/user.html',
         solves=solves,
@@ -97,5 +98,6 @@ def users_detail(user_id):
         missing=missing,
         place=place,
         fails=fails,
-        awards=awards
+        awards=awards,
+        getIPinfo=getIPinfo
     )

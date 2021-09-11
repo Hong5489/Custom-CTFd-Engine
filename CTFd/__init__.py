@@ -131,8 +131,8 @@ def create_app(config='CTFd.config.Config'):
             db.create_all()
             stamp()
         else:
-            # This creates tables instead of db.create_all()
-            # Allows migrations to happen properly
+        # This creates tables instead of db.create_all()
+        # Allows migrations to happen properly
             upgrade()
 
         from CTFd.models import ma

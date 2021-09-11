@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{ url_for('views.themes', theme='admin', path='css/challenge-board.css') }}">
-	<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+	<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
 	<style>
     body { background-color:#fafafa;}
         .table-sortable {
@@ -55,7 +55,7 @@
                 <tbody id="body">
                 {% for c in category %}
                 <tr>
-                    <td>{{ c.number }}</td><td><span>{{ c.name }}</span></td>
+                    <td id={{c.id}}>{{ c.number }}</td><td><span>{{ c.name }}</span></td>
                     <td>{{ c.description }}</td>
                     <td><a class="fas fa-edit" href="{{ url_for('admin.category_edit',category_id=c.id) }}"></a></td>
                     <td><a class="fas fa-trash" onclick="remove({{c.id}},'{{c.name}}')"></a></td>

@@ -353,14 +353,14 @@ function loadchals(cb) {
                     '{0}</a></li>'.format(name)));
                 categoryTab = '<div id="{0}" class="tab-pane fade">'.format(name.replace(" ",'')+id.toString());
             }
-            if ($.inArray(name, categories) == -1) {
+            //if ($.inArray(name, categories) == -1) {
                 var category = name;
                 categories.push(category);
 
                 var categoryid = category.replace(/ /g, "-").hashCode();
                 var categoryrow = $(
                     categoryTab +
-                    '<div id="{0}-row" class="pt-2">'.format(categoryid) +
+                    '<div id="{0}-row" class="pt-2">'.format(id) +
                     '<div class="category-header col-md-12 mb-4">' +
                     '</div>' +
                     '<div class="category-challenges col-md-12">' +
@@ -370,13 +370,14 @@ function loadchals(cb) {
                 categoryrow.find(".category-header").append($("<p class='mt-3' style='font-size:1.15rem;color:#37d63e;'>" + description + "</p>"));
 
                 $('#challenges-board').append(categoryrow);
-            }
+            //}
         }
         for (var i = 0; i <= challenges.length - 1; i++) {
             var chalinfo = challenges[i];
-            var challenge = chalinfo.category.replace(/ /g, "-").hashCode();
+            //var challenge = chalinfo.category.replace(/ /g, "-").hashCode();
             var chalid = chalinfo.name.replace(/ /g, "-").hashCode();
-            var catid = chalinfo.category.replace(/ /g, "-").hashCode();
+            //var catid = chalinfo.category.replace(/ /g, "-").hashCode();
+            var catid = chalinfo.category_id;
             var chalwrap = $("<div id='{0}' class='col-md-3 d-inline-block'></div>".format(chalid));
             if(!chalinfo.lock){
                 if (user_solves.indexOf(chalinfo.id) == -1) {

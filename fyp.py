@@ -79,12 +79,12 @@ def showCategory():
 	from CTFd.models import db,Category,Challenges
 	categories = Category.query.all()
 	categories_name = [i.name for i in categories]
-	challenges = Challenges.query.all()
-	for c in challenges:
-		for i,name in enumerate(categories_name):
-			if c.category == name:
-				c.category_id = i
-	db.session.commit()
+	# challenges = Challenges.query.all()
+	# for c in challenges:
+	# 	for i,name in enumerate(categories_name):
+	# 		if c.category == name:
+	# 			c.category_id = i
+	# db.session.commit()
 	return categories_name
 
 def showCategoryDesc():
@@ -137,3 +137,13 @@ def announceDiscord(text):
 	from CTFd.utils import get_config
 	import os, base64
 	os.system(f"python3 bot.py {get_config('token')} {get_config('channel')} {base64.b64encode(text.encode()).decode()}")
+
+def getIPinfo(ip):
+	from CTFd.utils import get_config
+	import ipinfo
+	if get_config('ipinfo_token'):	
+		handler = ipinfo.getHandler(get_config('ipinfo_token'))
+		details = handler.getDetails(ip)
+		return details.country_name
+	else:
+		return "Missing ipinfo token"
