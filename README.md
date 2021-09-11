@@ -2,6 +2,7 @@
 Custom made CTFd engine by SKR, live at [skrctf.me](https://skrctf.me). Upgraded to Python3!
 
 ## Features
+- Support SSL cert
 - Flag Sharing Prevention
 - Dynamic Flag for Web Challenges and Binary Challenges
 - Web Shell login using Team Credentials
@@ -13,13 +14,12 @@ Custom made CTFd engine by SKR, live at [skrctf.me](https://skrctf.me). Upgraded
 - Netcat container for multiple challenges
 - Share writeup with other players
 - Like challenge feature
+- Show users IP country using IPinfo
 
 ## How to Setup
-First run this:
-```
-pip install -r requirements.txt
-```
-Then install `docker` and `docker-compose` (For Debian):
+Need install docker to run the platform 
+
+`docker` and `docker-compose` (For Debian):
 ```
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 echo 'deb https://download.docker.com/linux/debian stretch stable' > /etc/apt/sources.list.d/docker.list
@@ -28,10 +28,80 @@ apt-get install docker-ce
 pip install docker-compose
 ```
 
-After that, run this and you're done!
+Comment out linux2 part at `docker-compose.yml` because it is a challenge container.
+
+Change the `hostname` - `skrctf.me` of proxy container in `docker-compose.yml` to match your website, if you run locally then change to `localhost`
+
+After that, run this and wait for it to build!
 ```
 docker-compose up
 ```
+
+## Troubleshoot
+Maybe you will encounter some error when running the docker-compose
+
+If you don't have SSL cert to try can replace the `nginx.conf` to this:
+```
+user nobody nogroup; pid /tmp/nginx.pid; error_log /var/log/nginx/error.log;
+# Best set to 1 as long as CTFd is served up from the same host
+worker_processes 1; events {
+  worker_connections 1024; # increase if you have lots of clients
+  accept_mutex off; # set to 'on' if nginx worker_processes > 1
+  use epoll; # a fast event mechanism for Linux 2.6+
+}
+http {
+  resolver 127.0.0.11; 
+  include mime.types;
+  # fallback in case we can't determine a type
+  default_type application/octet-stream;
+  access_log /var/log/nginx/access.log combined;
+  
+  # Disable delayed sending of small packets
+  tcp_nodelay on;
+  upstream ctfd_app {
+    #fail_timeout=0 always retry ctfd even if it failed
+    server ctfd:8000 fail_timeout=0;
+  }
+  server {
+    # if no Host match, close the connection to prevent host spoofing
+    listen 8000 default_server;
+    return 444;
+  }
+  server {
+    listen 8000;
+    server_name $hostname;
+   
+    keepalive_timeout 5;
+    location / {
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto https;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+      proxy_buffering off;
+      proxy_pass http://ctfd_app;
+    }
+    location /webshell {
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto https;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+      proxy_buffering off;
+      proxy_pass http://webshell/;
+    }
+
+    location ~/ports/(?<port>(\d+))/(?<path>(.*)) {
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto https;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+      proxy_buffering off;
+      proxy_pass http://web_$port/$path$is_args$args;
+      add_header X-debug $path always;
+    }
+  }
+}
+```
+
 
 ## Themes
 ### 8 bit Theme
