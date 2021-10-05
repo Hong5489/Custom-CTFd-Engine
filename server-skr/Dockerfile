@@ -10,6 +10,8 @@ RUN mkdir /ctfuser
 RUN chmod 755 /ctf /ctfuser
 
 RUN mkdir /ctf/challenges
+RUN mkdir /ctf/linux_tutorials
+COPY linux_tutorials /ctf/linux_tutorials
 
 COPY *.c /
 COPY setup.sh /
