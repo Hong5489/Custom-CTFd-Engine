@@ -724,7 +724,7 @@ class ChallengeAnnounce(Resource):
 	def post(self, challenge_id):
 		chal = Challenges.query.filter(Challenges.id == challenge_id).first_or_404()
 		from fyp import announceDiscord, selectCategory
-		announceDiscord(f"A new challenge has created!\n**{chal.name}** in **{selectCategory(chal.category_id)}** category")
+		announceDiscord(f"A new challenge has created!\n**{chal.name}** in **{selectCategory(chal.category_id).name}** category")
 		return {
 				'success': True
 		}
