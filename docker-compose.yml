@@ -113,6 +113,7 @@ services:
       - "3014:2011"
       - "3022:2012"
       - "3023:2013"
+      - "3021:2014"
 
   linux2:
     container_name: "linux2"
@@ -120,6 +121,15 @@ services:
     hostname: "linux-tutorial2"
     ports:
       - "3015:2000"
+
+  xmas:
+    container_name: "xmas"
+    build: ../challenges/xmas
+    hostname: "xmas"
+    environment: 
+      - FLAG=SKR{flag}
+    ports:
+      - "3024:2000"
 
 networks:
     default:

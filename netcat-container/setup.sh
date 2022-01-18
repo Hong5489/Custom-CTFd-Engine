@@ -26,5 +26,6 @@ cd ../
 sudo -u ctf socat TCP-LISTEN:2011,reuseaddr,fork EXEC:'python3 linux1/server.py',pty,echo=0,stderr &
 sudo -u ctf socat TCP-LISTEN:2012,reuseaddr,fork EXEC:'python3 linux3/server.py',pty,echo=0,stderr &
 sudo -u ctf socat TCP-LISTEN:2013,reuseaddr,fork EXEC:'python3 linux4/server.py',pty,echo=0,stderr &
+sudo -u ctf socat TCP-LISTEN:2014,reuseaddr,fork EXEC:'python3 cat2/server.py'&
 
 while true; do sleep 1000; done
