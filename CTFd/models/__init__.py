@@ -784,6 +784,7 @@ class Ports(db.Model):
     number = db.Column(db.Integer)
     team_id = db.Column(db.Integer, db.ForeignKey('teams.id'))
     challenge_id = db.Column(db.Integer, db.ForeignKey('challenges.id'))
+    url = db.Column(db.String(32))
 
     def __init__(self, *args, **kwargs):
         super(Ports, self).__init__(**kwargs)

@@ -261,7 +261,7 @@ class Challenge(Resource):
 			if chal.ports:
 				for p in chal.ports:
 					if p.team_id == get_current_team().id:
-						response['ports'] = p.number
+						response['ports'] = p.url
 						break
 
 		db.session.close()
@@ -320,18 +320,18 @@ class ChallengeManagePorts(Resource):
 					'success': True,
 					'data': {
 						'status': "incorrect",
-						'message': "Another member already closed"
+						'message': "Another member closed / Over time limit"
 					}
 				}
 			db.session.delete(port)
 			db.session.commit()
 			from fyp import closePort
-			closePort(port.number)
+			closePort(port.url)
 			return {
 				'success': True,
 				'data': {
 					'status': "already_solved",
-					'message': "Successfully closed port %i" % port.number
+					'message': "Successfully closed port"
 				}
 			}
 		if port:
@@ -360,6 +360,8 @@ class ChallengeManagePorts(Resource):
 		db.session.add(port)
 		port.team_id = team.id
 		port.challenge_id = challenge_id
+		from os import urandom
+		port.url = urandom(16).hex()
 		db.session.commit()
 		flag = Flags.query.filter_by(challenge_id=challenge.id).first_or_404()
 		from fyp import createPort
@@ -368,8 +370,8 @@ class ChallengeManagePorts(Resource):
 			'success': True,
 			'data': {
 				'status': "already_solved",
-				'message': "Successfully created port %i" % port.number,
-				'number': port.number
+				'message': "Successfully created port",
+				'url': port.url
 			}
 		}
 

@@ -91,9 +91,10 @@ function managePort() {
         if(!port.checked){
             document.getElementById("port-status").innerHTML = "Closed";
         }else{
-            var number = response.data.number.toString();
-            document.getElementById("port-status").innerHTML = "Opened in this " + '<a href="http://skrctf.me/ports/'+ number +'/" target="_blank">Website</a><br>or <a href="http://skrctf.me" onmouseover="javascript:event.target.port='+number+'" target="_blank">Here</a> if got any problem';
-            console.log(number);
+            var url = response.data.url.toString();
+            var hostname = window.location.hostname;
+            document.getElementById("port-status").innerHTML = "Opened in this " + '<a href="http://' + hostname + '/ports/'+ url +'/" target="_blank">Website</a>';
+            console.log(url);
         }
         port.disabled = false;
     });
