@@ -106,7 +106,7 @@ def showCategoryDesc():
 
 def selectCategory(id):
 	from CTFd.models import Category
-	c = Category.query.filter_by(id=id).first_or_404()
+	c = Category.query.filter_by(id=id).first()
 	return c
 
 def currentCategory():
