@@ -1,6 +1,6 @@
 from flask import session, request, abort
 from flask_restx import Namespace, Resource
-from CTFd.models import db, Users, Solves, Awards, Fails, Tracking, Unlocks, Submissions, Notifications
+from CTFd.models import db, Users, Solves, Awards, Fails, Tracking, Unlocks, Submissions, Notifications, Likes, Writeups
 from CTFd.utils.decorators import (
     authed_only,
     admins_only,
@@ -130,6 +130,8 @@ class UserPublic(Resource):
         Submissions.query.filter_by(user_id=user_id).delete()
         Solves.query.filter_by(user_id=user_id).delete()
         Tracking.query.filter_by(user_id=user_id).delete()
+        Likes.query.filter_by(user_id=user_id).delete()
+        Writeups.query.filter_by(user_id=user_id).delete()
         Users.query.filter_by(id=user_id).delete()
         db.session.commit()
         db.session.close()
