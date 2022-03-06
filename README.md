@@ -27,20 +27,19 @@ apt-get update
 apt-get install docker-ce
 pip install docker-compose
 ```
+After that, download the zip file from the [release](https://github.com/Hong5489/Custom-CTFd-Engine/releases), then extract it.
 
-Comment out linux2 part at `docker-compose.yml` because it is a challenge container.
-
-Change the `hostname` - `skrctf.me` of proxy container in `docker-compose.yml` to match your website, if you run locally then change to `localhost`
+Change the `hostname` of proxy container in `docker-compose.yml` to match your website, if you run locally then change to `localhost`
 
 After that, run this and wait for it to build!
 ```
 docker-compose up
 ```
+## SSL cert
 
-## Troubleshoot
-Maybe you will encounter some error when running the docker-compose
+You can use your own SSL cert, just replace the cert in `CTFd/ssl` folder
 
-If you don't have SSL cert to try can replace the `nginx.conf` to this:
+If you wanna try without HTTPS, can change the `nginx.conf` to this:
 ```
 user nobody nogroup; pid /tmp/nginx.pid; error_log /var/log/nginx/error.log;
 # Best set to 1 as long as CTFd is served up from the same host
@@ -102,8 +101,10 @@ http {
 }
 ```
 
-
 ## Themes
+
+Currently skrctf is using the 8 bit theme
+
 ### 8 bit Theme
 
 Go to /admin/config, enter the following code to Stylesheet editor and press **Update**:
