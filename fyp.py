@@ -71,7 +71,7 @@ def createPort(challenge,flag,team,port):
 	# system("docker run -d --name web_%i -e FLAG=\"%s\" -p %i:80 --network=\"custom-ctfd-engine_default\" %s" %(port.number,generateFlag(flag,team),port.number,challenge.docker_name))
 	system(f"docker run -d --rm --name web_{port.url} -e FLAG=\"{generateFlag(flag,team)}\" -p {port.number}:80 --network=\"custom-ctfd-engine_default\" {challenge.docker_name}")
 	# system("docker stop web_%i -t 1800 && docker rm web_%i && docker exec custom-ctfd-engine_db_1 bash -c \"mysql -uroot -pctfd ctfd -e 'delete from ports where number = %i;'\" &" % (port.number,port.number,port.number))
-	system(f"""docker stop web_{port.url} -t 1800 && docker exec custom-ctfd-engine_db_1 bash -c "mysql -uroot -pctfd ctfd -e 'delete from ports where url = \\"{port.url}\\";'" &""")
+	system(f"""docker stop web_{port.url} -t 1800 && docker exec database bash -c "mysql -uroot -pctfd ctfd -e 'delete from ports where url = \\"{port.url}\\";'" &""")
 
 def closePort(port_url):
 	from os import system

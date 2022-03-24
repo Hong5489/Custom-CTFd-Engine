@@ -7,7 +7,7 @@ RUN mkdir /root/.ssh
 
 RUN mkdir /ctf
 RUN mkdir /ctfuser
-RUN chmod 755 /ctf /ctfuser
+RUN chmod 755 /ctf /ctfuser /tmp
 
 RUN mkdir /ctf/challenges
 RUN mkdir /ctf/linux_tutorials

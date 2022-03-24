@@ -22,6 +22,7 @@ services:
   
   db:
     image: mariadb:10.4
+    container_name: "database"
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=ctfd
@@ -122,14 +123,14 @@ services:
     ports:
       - "3015:2000"
 
-  xmas:
-    container_name: "xmas"
-    build: ../challenges/xmas
-    hostname: "xmas"
-    environment: 
-      - FLAG=SKR{flag}
-    ports:
-      - "3024:2000"
+  # xmas:
+  #   container_name: "xmas"
+  #   build: ../challenges/xmas
+  #   hostname: "xmas"
+  #   environment: 
+  #     - FLAG=SKR{flag}
+  #   ports:
+  #     - "3024:2000"
 
 networks:
     default:

@@ -23,13 +23,13 @@ SyslogFacility AUTH
 LogLevel QUIET
 
 # Authentication:
-LoginGraceTime 120
-PermitRootLogin yes
+LoginGraceTime 60
+PermitRootLogin no
 StrictModes yes
 
 RSAAuthentication yes
 PubkeyAuthentication yes
-#AuthorizedKeysFile	%h/.ssh/authorized_keys
+#AuthorizedKeysFile     %h/.ssh/authorized_keys
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts yes
@@ -86,3 +86,4 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # and ChallengeResponseAuthentication to 'no'.
 #UsePAM yes
 
+MaxAuthTries 3
