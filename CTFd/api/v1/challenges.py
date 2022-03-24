@@ -346,7 +346,7 @@ class ChallengeManagePorts(Resource):
 		target_port = 4000
 		while target_port in ports_id:
 			target_port += 1
-		if target_port > 4008:
+		if target_port > 4005:
 			return {
 				'success': True,
 				'data': {
