@@ -345,7 +345,7 @@ function loadchals(cb) {
                     '<h3 data-toggle="tab" href="#{0}" class="nav-link active" id="{1}" onclick="button=this.id">'.format(name.replace(" ",'')+id.toString(),id)+
                     arrow+
                     ' {0}</a></li>'.format(name)));
-                categoryTab = '<div id="{0}" class="tab-pane fade active show">'.format(name.replace(" ",'')+id.toString());
+                categoryTab = '<div id="{0}" class="tab-pane fade active show">'.format(name.replaceAll(" ",'')+id.toString());
             }else{
                 $("#button_list").append($(
                     '<li class="nav-item">'+
