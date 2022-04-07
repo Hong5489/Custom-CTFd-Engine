@@ -88,7 +88,7 @@ http {
       proxy_pass http://webshell/;
     }
 
-    location ~/ports/(?<port>(\d+))/(?<path>(.*)) {
+    location ~ "/ports/(?<port>([a-f0-9]{32}))/(?<path>(.*))" {
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       proxy_set_header X-Forwarded-Proto https;
       proxy_set_header Host $http_host;
