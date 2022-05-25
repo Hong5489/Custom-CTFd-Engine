@@ -116,12 +116,12 @@ services:
       - "3023:2013"
       - "3021:2014"
 
-  # linux2:
-  #   container_name: "linux2"
-  #   build: ../linux2/
-  #   hostname: "linux-tutorial2"
-  #   ports:
-  #     - "3015:2000"
+  linux2:
+   container_name: "linux2"
+   build: ../linux2/
+   hostname: "linux-tutorial2"
+   ports:
+     - "3015:2000"
 
   # xmas:
   #   container_name: "xmas"
