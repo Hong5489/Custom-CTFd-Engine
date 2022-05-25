@@ -63,6 +63,15 @@ chmod 4755 format
 chmod 644 format.c
 chmod 400 flag.txt
 
+mkdir /ctf/challenges/overflow4
+cd /ctf/challenges/overflow4
+cp /overflow4.c ./
+echo "SKR{Sh3llC0d3_fr0m_\$74Ck}" > flag.txt
+gcc -fno-stack-protector -z execstack -o overflow4 overflow4.c
+chmod 4755 overflow4
+chmod 644 overflow4.c
+chmod 400 flag.txt
+
 mkdir /ctf/beginner_reverse
 cd /ctf/beginner_reverse
 cp /beginner5.c .
@@ -92,6 +101,9 @@ rm guess_num && ln -s /ctf/challenges/guess_num/guess_num guess_num
 
 cd ../format_string
 rm format && ln -s /ctf/challenges/format_string/format format
+
+cd ../overflow4
+rm overflow4 && ln -s /ctf/challenges/overflow4/overflow4 overflow4
 
 cd /ctf
 apt-get clean && \

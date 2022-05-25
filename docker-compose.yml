@@ -6,7 +6,7 @@ services:
     restart: always
     # Included NGINX config used hostname to determine what it's server_name will be 
     # Either set NGINX_HOSTNAME to it's public DNS name, change this line, or the config
-    hostname: ${NGINX_HOSTNAME:-skrctf.me}
+    hostname: ${NGINX_HOSTNAME:-localhost}
     ports:
       - "80:8000"
       - "443:8443"
@@ -116,12 +116,12 @@ services:
       - "3023:2013"
       - "3021:2014"
 
-  linux2:
-    container_name: "linux2"
-    build: ../linux2/
-    hostname: "linux-tutorial2"
-    ports:
-      - "3015:2000"
+  # linux2:
+  #   container_name: "linux2"
+  #   build: ../linux2/
+  #   hostname: "linux-tutorial2"
+  #   ports:
+  #     - "3015:2000"
 
   # xmas:
   #   container_name: "xmas"

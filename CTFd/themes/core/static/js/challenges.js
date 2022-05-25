@@ -342,16 +342,16 @@ function loadchals(cb) {
             if(i == 0){
                 $("#button_list").append($(
                     '<li class="nav-item">'+
-                    '<h3 data-toggle="tab" href="#{0}" class="nav-link active" id="{1}" onclick="button=this.id">'.format(name.replaceAll(" ",'')+id.toString(),id)+
+                    '<h3 data-toggle="tab" href="#{0}" class="nav-link active" id="{1}" onclick="button=this.id">'.format(btoa(name).replaceAll('=','')+id.toString(),id)+
                     arrow+
                     ' {0}</a></li>'.format(name)));
-                categoryTab = '<div id="{0}" class="tab-pane fade active show">'.format(name.replaceAll(" ",'')+id.toString());
+                categoryTab = '<div id="{0}" class="tab-pane fade active show">'.format(btoa(name).replaceAll('=','')+id.toString());
             }else{
                 $("#button_list").append($(
                     '<li class="nav-item">'+
-                    '<h3 data-toggle="tab" href="#{0}" class="nav-link" id="{1}" onclick="button=this.id">'.format(name.replaceAll(" ",'')+id.toString(),id)+
+                    '<h3 data-toggle="tab" href="#{0}" class="nav-link" id="{1}" onclick="button=this.id">'.format(btoa(name).replaceAll('=','')+id.toString(),id)+
                     '{0}</a></li>'.format(name)));
-                categoryTab = '<div id="{0}" class="tab-pane fade">'.format(name.replaceAll(" ",'')+id.toString());
+                categoryTab = '<div id="{0}" class="tab-pane fade">'.format(btoa(name).replaceAll('=','')+id.toString());
             }
             //if ($.inArray(name, categories) == -1) {
                 var category = name;
