@@ -261,7 +261,8 @@ class Challenge(Resource):
 			if chal.ports:
 				for p in chal.ports:
 					if p.team_id == get_current_team().id:
-						response['ports'] = p.url
+						response['port_url'] = p.url
+						response['port_number'] = p.number
 						break
 
 		db.session.close()
@@ -371,7 +372,8 @@ class ChallengeManagePorts(Resource):
 			'data': {
 				'status': "already_solved",
 				'message': "Successfully created port",
-				'url': port.url
+				'url': port.url,
+				'number': port.number
 			}
 		}
 

@@ -39,7 +39,7 @@
 						<p>Difficulty: {{ difficulty | safe }}</p>
 						<div class="row pl-3">
 						<label class="switch">
-							{% if ports %}
+							{% if port_url %}
 								<input type="checkbox" id="port" onclick="managePort()" checked>
 							{% else %}
 								<input type="checkbox" id="port" onclick="managePort()">
@@ -47,8 +47,8 @@
 							<span class="slider"></span>
 						</label>
 						<div id="port-status" class="challenge-desc mb-3 pl-3">
-							{% if ports %}
-								Opened in this <a href="ports/{{ ports }}/" target="_blank">Website</a>
+							{% if port_url %}
+								Opened in this <a href="ports/{{ port_url }}/" target="_blank">Website</a><br>or <a href="/" onmouseover="javascript:event.target.port='{{ port_number }}';event.target.protocol='http:'" target="_blank">Here</a> if got any problem
 							{% else %}
 								Closed
 							{% endif %}

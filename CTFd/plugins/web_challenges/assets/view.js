@@ -92,8 +92,10 @@ function managePort() {
             document.getElementById("port-status").innerHTML = "Closed";
         }else{
             var url = response.data.url.toString();
+            var number = response.data.number.toString();
             var hostname = window.location.hostname;
-            document.getElementById("port-status").innerHTML = "Opened in this " + '<a href="http://' + hostname + '/ports/'+ url +'/" target="_blank">Website</a>';
+            //document.getElementById("port-status").innerHTML = "Opened in this " + '<a href="http://' + hostname + '/ports/'+ url +'/" target="_blank">Website</a>';
+            document.getElementById("port-status").innerHTML = "Opened in this " + '<a href="http://' + hostname + '/ports/'+ url +'/" target="_blank">Website</a><br>or <a href="http://'+ hostname + '" onmouseover="javascript:event.target.port='+number+'" target="_blank">Here</a> if got any problem';
             console.log(url);
         }
         port.disabled = false;
