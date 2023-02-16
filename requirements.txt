@@ -36,7 +36,7 @@ marshmallow-sqlalchemy==0.17.0  # via -r requirements.in
 marshmallow==2.20.2       # via -r requirements.in, flask-marshmallow, marshmallow-sqlalchemy
 Flask-SocketIO==3.0.2
 boto3==1.9.39
-werkzeug==1.0.1
+werkzeug==2.2.3
 cmarkgfm==0.4.2
 gevent==20.9.0            # via -r requirements.in
 greenlet==0.4.17          # via gevent
