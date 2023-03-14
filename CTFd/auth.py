@@ -133,39 +133,43 @@ def register():
         email_address = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm-password']
+        hcaptcha_response = request.form['h-captcha-response']
 
-        name_len = len(name) == 0
-        names = Users.query.add_columns('name', 'id').filter_by(name=name).first()
-        emails = Users.query.add_columns('email', 'id').filter_by(email=email_address).first()
-        pass_short = len(password) == 0
-        pass_long = len(password) > 128
-        pass_match = password == confirm_password
-        valid_email = validators.validate_email(request.form['email'])
-        team_name_email_check = validators.validate_email(name)
+        if validators.validate_token(hcaptcha_response):
+            name_len = len(name) == 0
+            names = Users.query.add_columns('name', 'id').filter_by(name=name).first()
+            emails = Users.query.add_columns('email', 'id').filter_by(email=email_address).first()
+            pass_short = len(password) == 0
+            pass_long = len(password) > 128
+            pass_match = password == confirm_password
+            valid_email = validators.validate_email(request.form['email'])
+            team_name_email_check = validators.validate_email(name)
 
-        if not valid_email:
-            errors.append("Please enter a valid email address")
-        if email.check_email_is_whitelisted(email_address) is False:
-                errors.append(
-                    "Only email addresses under {domains} may register".format(
-                        domains=get_config('domain_whitelist')
+            if not valid_email:
+                errors.append("Please enter a valid email address")
+            if email.check_email_is_whitelisted(email_address) is False:
+                    errors.append(
+                        "Only email addresses under {domains} may register".format(
+                            domains=get_config('domain_whitelist')
+                        )
                     )
-                )
-        if names:
-            errors.append('That username is already taken')
-        if team_name_email_check is True:
-            errors.append('Your username cannot be an email address')
-        if emails:
-            errors.append('That email has already been used')
-        if pass_short:
-            errors.append('Pick a longer password')
-        if pass_long:
-            errors.append('Pick a shorter password')
-        if not pass_match:
-            errors.append("Password does not match")
-        if name_len:
-            errors.append('Pick a longer team name')
-        
+            if names:
+                errors.append('That username is already taken')
+            if team_name_email_check is True:
+                errors.append('Your username cannot be an email address')
+            if emails:
+                errors.append('That email has already been used')
+            if pass_short:
+                errors.append('Pick a longer password')
+            if pass_long:
+                errors.append('Pick a shorter password')
+            if not pass_match:
+                errors.append("Password does not match")
+            if name_len:
+                errors.append('Pick a longer team name')
+        else:
+            errors.append("Captcha not validated")
+            
         if len(errors) > 0:
             return render_template(
                 'register.html',

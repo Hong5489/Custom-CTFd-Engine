@@ -146,6 +146,8 @@ function update_token(type){
         text = JSON.stringify({"type":type,"token": document.getElementById("token").value,"channel": document.getElementById("channel").value});
     }else if (type === "ipinfo") {
         text = JSON.stringify({"type":type,"token": document.getElementById("ipinfo_token").value});
+    }else if (type === "secret_key"){
+        text = JSON.stringify({"type":type,"token": document.getElementById("secret_key").value});
     }
     CTFd.fetch('/api/v1/configs/updateToken',{
         method:'POST',

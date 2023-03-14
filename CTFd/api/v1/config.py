@@ -100,7 +100,9 @@ class UpdateToken(Resource):
 			set_config("channel",req["channel"])
 		elif req['type'] == "ipinfo":
 			set_config("ipinfo_token",req['token'])
-			
+		elif req['type'] == "secret_key":
+			set_config("secret_key",req['token'])
+
 		return {
 			"success":True
 		}

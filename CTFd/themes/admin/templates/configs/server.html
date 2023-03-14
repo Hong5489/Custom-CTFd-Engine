@@ -42,4 +42,15 @@
 		
 		<button class="btn btn-md btn-primary float-right" onclick="update_token('ipinfo')">Update</button>
 	</div>
+	<div class="form-group">
+		<label>
+			hCaptcha secret key
+			<small class="form-text text-muted">
+				Type the secret key here
+			</small>
+		</label>
+		<input class="form-control" id="secret_key" name="secret_key" type="text" placeholder="Secret Key" value="{{get_config('secret_key')}}"><br>
+		
+		<button class="btn btn-md btn-primary float-right" onclick="update_token('secret_key')">Update</button>
+	</div>
 </div>

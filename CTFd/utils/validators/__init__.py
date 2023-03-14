@@ -6,6 +6,8 @@ from six.moves.urllib.parse import urlparse, urljoin, quote, unquote
 from flask import request
 from marshmallow import ValidationError
 import re
+import requests
+import json
 
 
 def is_safe_url(target):
@@ -36,3 +38,12 @@ def validate_country_code(country_code):
         return
     if lookup_country_code(country_code) is None:
         raise ValidationError('Invalid Country')
+
+def validate_token(token):
+    from CTFd.utils import get_config
+    data = {
+        "secret":get_config("secret_key"),
+        "response":token
+    }
+    r = requests.post("https://hcaptcha.com/siteverify",data=data)
+    return json.loads(r.text)['success']

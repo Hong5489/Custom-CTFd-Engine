@@ -42,3 +42,5 @@ gevent==20.9.0            # via -r requirements.in
 greenlet==0.4.17          # via gevent
 discord.py
 ipinfo
+jinja2==2.11.3
+markupsafe==1.1.1
