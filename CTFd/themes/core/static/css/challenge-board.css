@@ -48,3 +48,75 @@
 #likes:hover {
     color: #e0245e;
 }
+
+:root {
+    --cat-tutorial: #4a90d9;
+    --cat-web: #17b06b;
+    --cat-crypto: #a259ff;
+    --cat-reverse: #e0524d;
+    --cat-forensics: #f2a541;
+    --cat-binary: #d94fa1;
+    --cat-osint: #5ec9c2;
+    --cat-misc: #9aa0a6;
+    --cat-linux: #6fcf97;
+    --cat-ml: #ff8a5c;
+    --cat-minigame: #f5d442;
+    --cat-programming: #4ecdc4;
+    --cat-steg: #b0855b;
+}
+
+.cat-tutorial-warm-up .challenge-button { border-left: 4px solid var(--cat-tutorial); }
+.cat-web .challenge-button { border-left: 4px solid var(--cat-web); }
+.cat-cryptography .challenge-button { border-left: 4px solid var(--cat-crypto); }
+.cat-reverse-engineering .challenge-button { border-left: 4px solid var(--cat-reverse); }
+.cat-forensics .challenge-button { border-left: 4px solid var(--cat-forensics); }
+.cat-binary .challenge-button { border-left: 4px solid var(--cat-binary); }
+.cat-osint .challenge-button { border-left: 4px solid var(--cat-osint); }
+.cat-miscellaneous .challenge-button { border-left: 4px solid var(--cat-misc); }
+.cat-linux .challenge-button { border-left: 4px solid var(--cat-linux); }
+.cat-machine-learning .challenge-button { border-left: 4px solid var(--cat-ml); }
+.cat-mini-game .challenge-button { border-left: 4px solid var(--cat-minigame); }
+.cat-programming .challenge-button { border-left: 4px solid var(--cat-programming); }
+.cat-steganography .challenge-button { border-left: 4px solid var(--cat-steg); }
+
+.cat-tutorial-warm-up .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-tutorial) 60%, transparent); }
+.cat-web .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-web) 60%, transparent); }
+.cat-cryptography .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-crypto) 60%, transparent); }
+.cat-reverse-engineering .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-reverse) 60%, transparent); }
+.cat-forensics .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-forensics) 60%, transparent); }
+.cat-binary .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-binary) 60%, transparent); }
+.cat-osint .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-osint) 60%, transparent); }
+.cat-miscellaneous .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-misc) 60%, transparent); }
+.cat-linux .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-linux) 60%, transparent); }
+.cat-machine-learning .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-ml) 60%, transparent); }
+.cat-mini-game .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-minigame) 60%, transparent); }
+.cat-programming .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-programming) 60%, transparent); }
+.cat-steganography .challenge-button.solved-challenge { border-left: 4px solid color-mix(in srgb, var(--cat-steg) 60%, transparent); }
+
+.cat-tab-tutorial-warm-up.nav-link.active { border-bottom: 3px solid var(--cat-tutorial); }
+.cat-tab-web.nav-link.active { border-bottom: 3px solid var(--cat-web); }
+.cat-tab-cryptography.nav-link.active { border-bottom: 3px solid var(--cat-crypto); }
+.cat-tab-reverse-engineering.nav-link.active { border-bottom: 3px solid var(--cat-reverse); }
+.cat-tab-forensics.nav-link.active { border-bottom: 3px solid var(--cat-forensics); }
+.cat-tab-binary.nav-link.active { border-bottom: 3px solid var(--cat-binary); }
+.cat-tab-osint.nav-link.active { border-bottom: 3px solid var(--cat-osint); }
+.cat-tab-miscellaneous.nav-link.active { border-bottom: 3px solid var(--cat-misc); }
+.cat-tab-linux.nav-link.active { border-bottom: 3px solid var(--cat-linux); }
+.cat-tab-machine-learning.nav-link.active { border-bottom: 3px solid var(--cat-ml); }
+.cat-tab-mini-game.nav-link.active { border-bottom: 3px solid var(--cat-minigame); }
+.cat-tab-programming.nav-link.active { border-bottom: 3px solid var(--cat-programming); }
+.cat-tab-steganography.nav-link.active { border-bottom: 3px solid var(--cat-steg); }
+
+.cat-tab-tutorial-warm-up.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-tutorial) 40%, transparent); }
+.cat-tab-web.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-web) 40%, transparent); }
+.cat-tab-cryptography.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-crypto) 40%, transparent); }
+.cat-tab-reverse-engineering.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-reverse) 40%, transparent); }
+.cat-tab-forensics.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-forensics) 40%, transparent); }
+.cat-tab-binary.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-binary) 40%, transparent); }
+.cat-tab-osint.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-osint) 40%, transparent); }
+.cat-tab-miscellaneous.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-misc) 40%, transparent); }
+.cat-tab-linux.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-linux) 40%, transparent); }
+.cat-tab-machine-learning.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-ml) 40%, transparent); }
+.cat-tab-mini-game.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-minigame) 40%, transparent); }
+.cat-tab-programming.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-programming) 40%, transparent); }
+.cat-tab-steganography.nav-link { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cat-steg) 40%, transparent); }

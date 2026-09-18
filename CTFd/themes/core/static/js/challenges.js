@@ -339,17 +339,20 @@ function loadchals(cb) {
             let description = cat[i].description;
             let id = cat[i].id;
             var categoryTab = "";
+            // Stable, human-readable slug for CSS color hooks — derived from
+            // category name (not numeric id) so colors survive re-imports.
+            var catSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
             if(i == 0){
                 $("#button_list").append($(
                     '<li class="nav-item">'+
-                    '<h3 data-toggle="tab" href="#{0}" class="nav-link active" id="{1}" onclick="button=this.id">'.format(btoa(name).replaceAll('=','')+id.toString(),id)+
+                    '<h3 data-toggle="tab" href="#{0}" class="nav-link active cat-tab-{2}" id="{1}" onclick="button=this.id">'.format(btoa(name).replaceAll('=','')+id.toString(),id,catSlug)+
                     arrow+
                     ' {0}</a></li>'.format(name)));
                 categoryTab = '<div id="{0}" class="tab-pane fade active show">'.format(btoa(name).replaceAll('=','')+id.toString());
             }else{
                 $("#button_list").append($(
                     '<li class="nav-item">'+
-                    '<h3 data-toggle="tab" href="#{0}" class="nav-link" id="{1}" onclick="button=this.id">'.format(btoa(name).replaceAll('=','')+id.toString(),id)+
+                    '<h3 data-toggle="tab" href="#{0}" class="nav-link cat-tab-{2}" id="{1}" onclick="button=this.id">'.format(btoa(name).replaceAll('=','')+id.toString(),id,catSlug)+
                     '{0}</a></li>'.format(name)));
                 categoryTab = '<div id="{0}" class="tab-pane fade">'.format(btoa(name).replaceAll('=','')+id.toString());
             }
@@ -360,7 +363,7 @@ function loadchals(cb) {
                 var categoryid = category.replace(/ /g, "-").hashCode();
                 var categoryrow = $(
                     categoryTab +
-                    '<div id="{0}-row" class="pt-2">'.format(id) +
+                    '<div id="{0}-row" class="pt-2 cat-{1}">'.format(id, catSlug) +
                     '<div class="category-header col-md-12 mb-4">' +
                     '</div>' +
                     '<div class="category-challenges col-md-12">' +
